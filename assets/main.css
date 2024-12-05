@@ -1,0 +1,44 @@
+label {
+    display: block;
+    font-size: 0.9em;
+}
+
+input {
+    width: 60%;
+    padding: 4px;
+}
+
+button {
+    color: var(--vscode-button-foreground);
+    background-color: var(--vscode-button-background);
+    border-color: var(--vscode-button-border);
+    padding: 4px;
+}
+
+button:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+form > div {
+    margin-bottom: 12px;
+}
+
+.collection-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 8px;
+    border-bottom: 1px solid var(--vscode-editorWidget-border);
+}
+
+.collection-item > div {
+    display: grid;
+    align-items: center;
+}
+
+.collection-item > pre {
+    display: none;
+    grid-column: span 2;
+    border: 1px solid var(--vscode-editorWidget-border);
+    border-radius: 3px;
+    padding: 5px;
+}

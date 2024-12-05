@@ -1,0 +1,141 @@
+{
+  "name": "vscode-wix-data-view",
+  "displayName": "vscode-wix-data-view",
+  "description": "Wix Data (CMS) client integrated into VSCode.",
+  "version": "0.0.1",
+  "icon": "assets/db_white_256.png",
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vscode-wix-data-view.refresh-collections",
+        "title": "Wix Data: Refresh Collections",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "vscode-wix-data-view.open-collection",
+        "title": "Wix Data: Open Collection",
+        "icon": "$(search)"
+      },
+      {
+        "command": "vscode-wix-data-view.configure-credentials",
+        "title": "Wix Data: Configure Credentials",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "vscode-wix-data-view.new-query",
+        "title": "Wix Data: Write Query",
+        "icon": "$(search)"
+      },
+      {
+        "command": "vscode-wix-data-view.run-query",
+        "title": "Wix Data: Run Query",
+        "icon": "$(play)"
+      },
+      {
+        "command": "vscode-wix-data-view.copy-id",
+        "title": "Copy ID",
+        "icon": "$(clippy)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "vscode-wix-data-view",
+          "title": "Wix Data",
+          "icon": "./assets/db.svg"
+        }
+      ]
+    },
+    "views": {
+      "vscode-wix-data-view": [
+        {
+          "id": "vscode-wix-data-view.collection-tree",
+          "name": "Collections",
+          "icon": "./assets/db.svg"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "vscode-wix-data-view.refresh-collections",
+          "when": "view == vscode-wix-data-view.collection-tree",
+          "group": "navigation"
+        },
+        {
+          "command": "vscode-wix-data-view.configure-credentials",
+          "when": "view == vscode-wix-data-view.collection-tree",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "vscode-wix-data-view.open-collection",
+          "when": "view == vscode-wix-data-view.collection-tree && viewItem == collection",
+          "group": "inline"
+        },
+        {
+          "command": "vscode-wix-data-view.open-collection",
+          "when": "view == vscode-wix-data-view.collection-tree && viewItem == collection",
+          "title": "View Collection Data"
+        },
+        {
+          "command": "vscode-wix-data-view.copy-id",
+          "when": "view == vscode-wix-data-view.collection-tree && (viewItem == collection || viewItem == field)",
+          "title": "Copy ID"
+        }
+      ],
+      "editor/title/run": [
+        {
+          "command": "vscode-wix-data-view.run-query",
+          "when": "resourceFilename =~ /\\.wdq\\.js$/",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "yarn run test-unit && yarn run test-extension",
+    "test-extension": "vscode-test --timeout 10000 --run ./out/test/extension.test.js",
+    "test-unit": "mocha -r ts-node/register test/**/*.spec.ts"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.91.0",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.11.0",
+    "@vscode/test-cli": "^0.0.9",
+    "@vscode/test-electron": "^2.4.0",
+    "eslint": "^8.57.0",
+    "mocha": "^10.8.2",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@wix/data": "^1.0.121",
+    "@wix/sdk": "^1.12.8",
+    "@wix/wix-data-items-sdk": "^1.0.170",
+    "lodash": "^4.17.21"
+  }
+}

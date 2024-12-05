@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g fill="none" fill-rule="evenodd" stroke="#C5C5C5" transform="translate(1 1)">
+    <rect width="15" height="9" x="3.5" y="6.5" rx="3"/>
+    <line x1="13.5" x2="14.5" y1="10.5" y2="11.5" stroke-linecap="square"/>
+    <line x1="14.5" x2="15.5" y1="10.5" y2="11.5" stroke-linecap="square" transform="matrix(-1 0 0 1 30 0)"/>
+  </g>
+</svg>
