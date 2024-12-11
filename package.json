@@ -3,13 +3,18 @@
   "displayName": "vscode-wix-data-view",
   "description": "Wix Data (CMS) client integrated into VSCode.",
   "version": "0.0.1",
-  "icon": "assets/db_white_256.png",
+  "publisher": "wix",
+  "icon": "assets/db_grey_256.png",
   "engines": {
     "vscode": "^1.91.0"
   },
   "categories": [
     "Other"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wix-incubator/vscode-wix-data-view.git"
+  },
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
