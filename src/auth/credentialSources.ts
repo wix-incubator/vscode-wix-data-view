@@ -1,6 +1,10 @@
 import fs from 'fs';
+import os from 'os';
+import path from 'path';
 
 import * as vscode from 'vscode';
+
+const WIX_CLI_API_KEY_PATH = '.wix/auth/api-key.json';
 
 export class APIKeyAuthSource {
     private readonly context: vscode.ExtensionContext;
@@ -15,9 +19,26 @@ export class APIKeyAuthSource {
     private load(): void {
         this.context.secrets.get('wixApiKey')
             .then((apiKey) => {
-                this.apiKey = apiKey ?? '';
+                if (apiKey) {
+                    this.apiKey = apiKey;
+                } else {
+                    this.apiKey = this.loadFromCliConfig();
+                }
                 this.ready = true;
             });
+    }
+
+    private loadFromCliConfig(): string {
+        const cliConfigPath = path.join(os.homedir(), WIX_CLI_API_KEY_PATH);
+        try {
+            if (fs.existsSync(cliConfigPath)) {
+                const config = JSON.parse(fs.readFileSync(cliConfigPath, 'utf8'));
+                return config.token ?? '';
+            }
+        } catch (error) {
+            console.error('Failed to load API key from CLI config:', error);
+        }
+        return '';
     }
 
     public updateApiKey(apiKey: string): void {
