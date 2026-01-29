@@ -75,3 +75,6 @@ dist/
 # VSCode
 .vscode
 .vscode-test
+
+#Built extension
+*.vsix
