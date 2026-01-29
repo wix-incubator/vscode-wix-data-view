@@ -35,7 +35,7 @@ export class DefaultWixDataCollectionProvider implements WixDataCollectionProvid
                     offset: 0
                 }
             });
-            return listDataCollectionsResponse.collections;
+            return listDataCollectionsResponse.collections ?? [];
         } catch (e) {
             this.outputChannel.appendLine(`Error fetching Wix Data collections: ${e}. Have you configured your API key and site ID?`);
             vscode.window.showErrorMessage(`Error fetching Wix Data collections: ${e}. Have you configured your API key and site ID?`);

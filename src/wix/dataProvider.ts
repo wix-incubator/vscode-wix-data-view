@@ -10,7 +10,7 @@ export class WixDataItemProvider {
         this.wixCredentialManager = wixCredentialManager;
     }
 
-    async getItems(collectionId: string): Promise<items.DataItemsQueryResult> {
+    async getItems(collectionId: string): Promise<items.WixDataResult> {
         const wixClient = createClient({
             auth: toWixSdkAuth(
                 this.wixCredentialManager.getAuth()!, 
@@ -19,9 +19,7 @@ export class WixDataItemProvider {
             modules: { items }
         });
 
-        const listItemsResponse = await wixClient.items.queryDataItems({
-            dataCollectionId: collectionId,
-        }).find();
+        const listItemsResponse = await wixClient.items.query(collectionId).find();
 
         return listItemsResponse;
     }
