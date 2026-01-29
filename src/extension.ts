@@ -35,6 +35,14 @@ export async function activate(context: vscode.ExtensionContext) {
 		});
 	}
 
+
+	// Listen for workspace folder changes
+	context.subscriptions.push(
+		vscode.workspace.onDidChangeWorkspaceFolders(() => {
+			credentialManager.runSuggestions();
+		})
+	);
+
 	context.subscriptions.push(
 		vscode.commands.registerCommand('vscode-wix-data-view.refresh-collections', () => {
 			dataCollectionTree.refresh();

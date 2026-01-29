@@ -36,12 +36,10 @@ export class WixCredentialManager {
         return this.authSourceSetting;
     }
 
-    private runSuggestions(): void {
-        const siteId = this.getSiteId();
-
-        console.log('Is SiteID available: ', this.workspaceWixConfigSiteIdSource.isAvailable(), ', current: ', siteId);
-
-        if ((!siteId || siteId === '') && this.workspaceWixConfigSiteIdSource.isAvailable()) {
+    public runSuggestions(): void {
+        this.workspaceWixConfigSiteIdSource.load();
+        if (this.workspaceWixConfigSiteIdSource.isAvailable() &&
+            this.workspaceWixConfigSiteIdSource.getSiteId() !== this.getSiteId()) {
             vscode.window.showInformationMessage('Do you want to switch Wix Data View plugin to show data from site referred to by a current project?', 'Yes', 'No')
                 .then((selection) => {
                     if (selection === 'Yes') {

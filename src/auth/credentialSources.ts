@@ -76,7 +76,7 @@ export class WorkspaceWixConfigSiteIdSource {
         this.load();
     }
 
-    private load(): void {
+    public load(): void {
         if (vscode.workspace.workspaceFolders) {
             for (let workspaceFolder of vscode.workspace.workspaceFolders) {
                 const configFile = workspaceFolder.uri.fsPath + '/wix.config.json';
