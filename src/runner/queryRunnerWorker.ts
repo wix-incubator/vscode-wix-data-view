@@ -10,7 +10,10 @@ const wixClient = createClient({
   modules: { 
     wixDataItemsSdk,
     collections: wixDataSdk.collections,
-    indexes: wixDataSdk.indexes
+    indexes: wixDataSdk.indexes,
+    externalDatabaseConnections: wixDataSdk.externalDatabaseConnections,
+    backups: wixDataSdk.backups,
+    movementJobs: wixDataSdk.movementJobs,
   },
   auth: toWixSdkAuth(workerData.auth, workerData.siteId)
 });
@@ -18,6 +21,9 @@ const wixClient = createClient({
 const wixData = wixClient.wixDataItemsSdk;
 const collections = wixClient.collections;
 const indexes = wixClient.indexes;
+const backups = wixClient.backups;
+const movementJobs = wixClient.movementJobs;
+const externalDatabaseConnections = wixClient.externalDatabaseConnections;
 
 const _oldLog = console.log;
 const _oldWarn = console.warn;

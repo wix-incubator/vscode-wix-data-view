@@ -168,17 +168,17 @@
   resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@pkgjs/parseargs/-/parseargs-0.11.0.tgz"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@preact/signals-core@^1.12.0", "@preact/signals-core@^1.12.1":
-  version "1.12.1"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@preact/signals-core/-/signals-core-1.12.1.tgz#714b489bb35d9874cc44b35706a9dc27da8d21c4"
-  integrity sha512-BwbTXpj+9QutoZLQvbttRg5x3l5468qaV2kufh+51yha1c53ep5dY4kTuZR35+3pAZxpfQerGJiQqg34ZNZ6uA==
+"@preact/signals-core@^1.12.1", "@preact/signals-core@^1.13.0":
+  version "1.13.0"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@preact/signals-core/-/signals-core-1.13.0.tgz#ed770df2855701e7b42828fae5a348edeee9a3df"
+  integrity sha512-slT6XeTCAbdql61GVLlGU4x7XHI7kCZV5Um5uhE4zLX4ApgiiXc0UYFvVOKq06xcovzp7p+61l68oPi563ARKg==
 
 "@preact/signals-react@^3.6.1":
-  version "3.6.1"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@preact/signals-react/-/signals-react-3.6.1.tgz#04f039ffd04c783e093217892c0f58fb5c4addd7"
-  integrity sha512-paN0YP/SBiQa3ASljG+KlPkEKqPOtCjGFkF0AxK16RsJIvSVnh0Ckbx/1OkcVcnCNDbLnLws0wzMFLeDM9T1ZA==
+  version "3.9.0"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@preact/signals-react/-/signals-react-3.9.0.tgz#913bca91a88e8ac5fafc4f56a43411d717c31496"
+  integrity sha512-C0Qn4AiAYEAHbg7/UEMgdJd+GNDnP/OxI1tk+8WDco9QFIh4gbW+r9V2K4M6OAB6A/ztHW/uZ8/kwBnxNSB94g==
   dependencies:
-    "@preact/signals-core" "^1.12.0"
+    "@preact/signals-core" "^1.13.0"
     use-sync-external-store "^1.2.0"
 
 "@radix-ui/react-compose-refs@1.1.2":
@@ -521,159 +521,159 @@
   resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@webpack-cli/serve/-/serve-2.0.5.tgz"
   integrity sha512-lqaoKnRYBdo1UgDX8uF24AfGMifWK19TxPmM5FHc2vAGxrJ/qtyUyFBWoY1tISZdelsQ5fBcOusifo5o5wSJxQ==
 
-"@wix/auto_sdk_data_backups@1.0.41":
+"@wix/auto_sdk_data_backups@1.0.42":
+  version "1.0.42"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_backups/-/@wix/auto_sdk_data_backups-1.0.42.tgz#e3e0eab2e0a716ed5c2b0986cf4b83d272328ee0"
+  integrity sha512-W2nmq/gpLV5qPtO2LplKK0YmKncJRrpbYTBvVU9o6u4J8YaHNlO53AEaAxn4LbbGkleBFJfb1UOCmhtCnHoDsQ==
+  dependencies:
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
+
+"@wix/auto_sdk_data_collections@1.0.69":
+  version "1.0.69"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_collections/-/@wix/auto_sdk_data_collections-1.0.69.tgz#0e736e9df0cb0b547abad998105789c0bf56bf23"
+  integrity sha512-66zij7i75/bOf0cx6Kf54OheCFj2hAKtPLjWwxwVi5ygbiffMUHcO7Ix/At0y9BPfUbZ65Ub632oB9o3zzWlxQ==
+  dependencies:
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
+
+"@wix/auto_sdk_data_data-sync-jobs@1.0.13":
+  version "1.0.13"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_data-sync-jobs/-/@wix/auto_sdk_data_data-sync-jobs-1.0.13.tgz#c488c7d15dbb0f40c931b6f8d7751b48f78a253a"
+  integrity sha512-96+2S4T4PO5ICMKq4WVO2mcVay9g7mx9Z5RQpYqt3WJC6YbNz2dRN+FLKULOx3Lv600kTJv5n5tnIG9oTAqK4g==
+  dependencies:
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
+
+"@wix/auto_sdk_data_external-database-connections@1.0.41":
   version "1.0.41"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_backups/-/@wix/auto_sdk_data_backups-1.0.41.tgz#cb762247164a04f00fa72a002cae736b443951a8"
-  integrity sha512-ddaXGfpzEO6Y9As/5Cbaqf+HY7r95OyBiwDyfKa2AifomEKHtTFE+t/ahUkLx9PcZLWrWmw2tbEQ+0+gSSDtxA==
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_external-database-connections/-/@wix/auto_sdk_data_external-database-connections-1.0.41.tgz#19a077b9f0ad2c813b0c4f3f5d5f622f133ed5fe"
+  integrity sha512-zTVxaOY4biwUuKZtp+Z1T5rd0Qj4+LMIBxh4sleyuV0UQKH3F9rti4BNqA5R/AX1Hq+MKEihZP/ndGk7DYsYxg==
   dependencies:
-    "@wix/sdk-runtime" "^1.0.6"
-    "@wix/sdk-types" "^1.17.3"
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
 
-"@wix/auto_sdk_data_collections@1.0.57":
-  version "1.0.57"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_collections/-/@wix/auto_sdk_data_collections-1.0.57.tgz#faf9b8da80da855176df4fa168d90f9998ad321d"
-  integrity sha512-0nVCgmblfNELYwNpkBAvNdc4c9v5aFKHJ0TrllK/7qN6GBnBroyat8r0Rxp8qaU0tT26LyijGhn1A4fpsaEccA==
+"@wix/auto_sdk_data_external-database@1.0.25":
+  version "1.0.25"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_external-database/-/@wix/auto_sdk_data_external-database-1.0.25.tgz#cef8af63e895f037b854bbd084a9dc5d16adce79"
+  integrity sha512-VFgglKfD9E9+CGWKffK5HI4gcc7W+cwHuaymT2OLx/Mpehi6z8OFOM2cBIiBP/QQpegvriT21Qk1BE/o1GO31Q==
   dependencies:
-    "@wix/sdk-runtime" "^1.0.6"
-    "@wix/sdk-types" "^1.17.3"
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
 
-"@wix/auto_sdk_data_data-sync-jobs@1.0.8":
-  version "1.0.8"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_data-sync-jobs/-/@wix/auto_sdk_data_data-sync-jobs-1.0.8.tgz#332eb738cbd0db6dae32b941e01fb326e1607b5b"
-  integrity sha512-WBVDkgMcQm7QrMGZZrU7x4okwnVRMI1azyCs/NaJYJb12e7BHCjNEmcepWw+GPrtLsh6y/qO48eAbmk7S0Tg/Q==
+"@wix/auto_sdk_data_indexes@1.0.46":
+  version "1.0.46"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_indexes/-/@wix/auto_sdk_data_indexes-1.0.46.tgz#ee93f2d8fd40a866fe8d17b5fa2a41941a3f59ef"
+  integrity sha512-M86u/zmsyGDdtmzIv8QCwEAbra9/7IqR9ErHAMbZZZ3zZgaXFF8VbGvnHcbIH0dvH8nmdKFvSb7ecQzMufPa/w==
   dependencies:
-    "@wix/sdk-runtime" "^1.0.6"
-    "@wix/sdk-types" "^1.17.3"
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
 
-"@wix/auto_sdk_data_external-database-connections@1.0.40":
-  version "1.0.40"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_external-database-connections/-/@wix/auto_sdk_data_external-database-connections-1.0.40.tgz#2a5b12de22a50a1aa5a84c05732e73b4a83dbaf5"
-  integrity sha512-npsv7fzC87rdX1KQd6ubPDbVwI9BFH6FcwXVSHLhgIs6JRhHqv/wJqdXQnrdCO51B/Se7f42anjchIGuv8d9Gg==
+"@wix/auto_sdk_data_movement-jobs@1.0.45":
+  version "1.0.45"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_movement-jobs/-/@wix/auto_sdk_data_movement-jobs-1.0.45.tgz#93896fff0dc596c342742cfa02d009e19d6e0a69"
+  integrity sha512-4pkAuNzXITXMNdRV1jv5JojoOdABLENbP5hpV5DL6Gar0fe82lB9B4ePdpzcHKneDLTl9SxseGX/uGIU6fFa8Q==
   dependencies:
-    "@wix/sdk-runtime" "^1.0.6"
-    "@wix/sdk-types" "^1.17.3"
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
 
-"@wix/auto_sdk_data_external-database@1.0.24":
-  version "1.0.24"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_external-database/-/@wix/auto_sdk_data_external-database-1.0.24.tgz#b1e21822ed4fcdce87b25e13055f164ae4641a87"
-  integrity sha512-typi3W6SbRcApr3aPvfYSOuwCJDSfFtJe6Pp/zjit2bGD9IO9DUoHzt/AjpTfE8OS+8MZTLym8jLMedXnyLCrw==
+"@wix/auto_sdk_data_permissions@1.0.42":
+  version "1.0.42"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_permissions/-/@wix/auto_sdk_data_permissions-1.0.42.tgz#525973b6dc2b7e19a393757c9f3573d91bdc8dd2"
+  integrity sha512-+m3V6coF3tH6XDJc+KEBXUhpzf0eA4IF4jQj71vfXSIWTSfcfZHcp5sbUz0gPUqsUgPJ1SrBvBIeS0p62O0Q5Q==
   dependencies:
-    "@wix/sdk-runtime" "^1.0.6"
-    "@wix/sdk-types" "^1.17.3"
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
 
-"@wix/auto_sdk_data_indexes@1.0.43":
-  version "1.0.43"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_indexes/-/@wix/auto_sdk_data_indexes-1.0.43.tgz#2aabda11788223c0121c0cb950623b00e2e8ca9c"
-  integrity sha512-U38/4cjRDCY4t6lgs+SnKmTecgy4Xr+hIosFViYICaY8tvKC8xniwQQH5o1DhduHfmKuydpQaGzuBO49rB7p3A==
+"@wix/auto_sdk_data_sharing@1.0.15":
+  version "1.0.15"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_sharing/-/@wix/auto_sdk_data_sharing-1.0.15.tgz#e6adf4aed1f19c3f2444978f098fd0db5a87fbcb"
+  integrity sha512-RYYFHrctn1DridTjY2Mi7kOs/ctppAxYFYFtpHRnTWGoTC/h+vs5Q5/JEJjTFJacR4br+3DtJCNN+B/bMRurmQ==
   dependencies:
-    "@wix/sdk-runtime" "^1.0.6"
-    "@wix/sdk-types" "^1.17.3"
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
 
-"@wix/auto_sdk_data_movement-jobs@1.0.37":
-  version "1.0.37"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_movement-jobs/-/@wix/auto_sdk_data_movement-jobs-1.0.37.tgz#a3605ceaac319a66264627268008414da3eb199d"
-  integrity sha512-zrP0y/jSgCcAxlojYQNscSaefiV12KfF+wY5RLH0bTjIn6NJy2oUYWyzUwvBdtI7eZAgw7qhjzrUKadEr/6FSA==
+"@wix/auto_sdk_data_tasks@1.0.33":
+  version "1.0.33"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_tasks/-/@wix/auto_sdk_data_tasks-1.0.33.tgz#ce93d641ef4fdaa2695ac8108bc8c7f5f37e9485"
+  integrity sha512-DQymPjlD84eZNPZeQ0L7JsP9lRbC0Jpp2GVTUjBBYJDUxZE2nLknqtqQalD5PmZ2H411/gr/l906lBu1ho3lFA==
   dependencies:
-    "@wix/sdk-runtime" "^1.0.6"
-    "@wix/sdk-types" "^1.17.3"
-
-"@wix/auto_sdk_data_permissions@1.0.41":
-  version "1.0.41"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_permissions/-/@wix/auto_sdk_data_permissions-1.0.41.tgz#f32b08b87a2bab75ec30a1d4eded07ff5f8e7234"
-  integrity sha512-3xJgm5WI2zvy8N05C/8842gYTEuGV9cB7UvOYDGBq3NGX33DBoqMxkkscSF1Oc2rg9DFvfoxpAc5ODsSBilbWQ==
-  dependencies:
-    "@wix/sdk-runtime" "^1.0.6"
-    "@wix/sdk-types" "^1.17.3"
-
-"@wix/auto_sdk_data_sharing@1.0.12":
-  version "1.0.12"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_sharing/-/@wix/auto_sdk_data_sharing-1.0.12.tgz#f5d4fcd080a2412715ce83569b9b7d60926a3008"
-  integrity sha512-Fd/Q8m8AftsaULDmQpASCPq89y7tqtOd49XIogtd1vEuf9e5NkBl/8udn9SOAEoLMgSC+NmysWXlCQvXKgAcZQ==
-  dependencies:
-    "@wix/sdk-runtime" "^1.0.6"
-    "@wix/sdk-types" "^1.17.3"
-
-"@wix/auto_sdk_data_tasks@1.0.32":
-  version "1.0.32"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_data_tasks/-/@wix/auto_sdk_data_tasks-1.0.32.tgz#49abc24aa25f39c26a24e584de9fff8a06c0f980"
-  integrity sha512-x5r7uG8Ph1DZVegglLBIYDe0I0uNnwbSzf5FPlzF8U6N8CXQIJDulH/aWK+m20ya3ngl+SKoK5KjJ2hXPla7kA==
-  dependencies:
-    "@wix/sdk-runtime" "^1.0.6"
-    "@wix/sdk-types" "^1.17.3"
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
 
 "@wix/auto_sdk_ecom_checkout@^1.0.61":
-  version "1.0.132"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_ecom_checkout/-/@wix/auto_sdk_ecom_checkout-1.0.132.tgz#0493c058679269177d26401daf65cda072166ac8"
-  integrity sha512-6GmqH6UwD1ZmY+zUguk83O8tRj6EEuJeWUW8JXldBypMQozb/y0FO8B4r7GkiNTxanBNQuu45J+NNoXSj7YK4w==
+  version "1.0.138"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_ecom_checkout/-/@wix/auto_sdk_ecom_checkout-1.0.138.tgz#f1c07309a83f81f8c0c795ff17fa2400b5d7f425"
+  integrity sha512-yTFShy1nQMhEWCaXuap/1jK6QFLbgJiBBYdM7XRCfc/kxmXj35xSn/sSLK8FN1oyevZ3aB5uXcnSsGauXHJDKw==
   dependencies:
-    "@wix/sdk-runtime" "^1.0.6"
-    "@wix/sdk-types" "^1.17.3"
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
 
 "@wix/auto_sdk_ecom_current-cart@^1.0.56":
-  version "1.0.150"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_ecom_current-cart/-/@wix/auto_sdk_ecom_current-cart-1.0.150.tgz#a7e2e2742affbffce626f77b7cb5d1a9870d8d7c"
-  integrity sha512-MfeOKNdoEgQzrnRz1kC4v8WzX9ZxM1SOeQnxBtYfiqkaUXaSnFL67rbKoePtipfUduiTtJ7E8wOSIWfSXDd2yQ==
+  version "1.0.154"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_ecom_current-cart/-/@wix/auto_sdk_ecom_current-cart-1.0.154.tgz#12a3f06edafe1f299e97baa3a273adf10f529d17"
+  integrity sha512-FBpnsz0/5tseIdhQ8Ysv1eOsi2sr0zENDljiIZZBca4kAJJOMNgOQHElecrbBAIb/In8K3yOjt42qHV35mz/dw==
   dependencies:
-    "@wix/sdk-runtime" "^1.0.6"
-    "@wix/sdk-types" "^1.17.3"
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
 
-"@wix/auto_sdk_identity_authentication@1.0.41":
+"@wix/auto_sdk_identity_authentication@1.0.44":
+  version "1.0.44"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_identity_authentication/-/@wix/auto_sdk_identity_authentication-1.0.44.tgz#694d2058450c6efad15e94cc5a2b7299ab049714"
+  integrity sha512-FH0zvwQFV+gB36zmhZmfLFphymbUyD7qvzUVj5pVZV34B2UyLka0RQYWtlMFJ5Itu0fMfvoiyf1PFOmsweFJIg==
+  dependencies:
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
+
+"@wix/auto_sdk_identity_oauth@1.0.35":
+  version "1.0.35"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_identity_oauth/-/@wix/auto_sdk_identity_oauth-1.0.35.tgz#89e2638685209ba756aa90edbf67fcede46bb144"
+  integrity sha512-k9E020DmvX/KPowzCUtQpNg6i5mIHnUd6AcsxmL4zz2hPx5ssj2Yt+rqZ2Ch6pkpTyn8heV8mMtcze6yqlKgsA==
+  dependencies:
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
+
+"@wix/auto_sdk_identity_recovery@1.0.41":
   version "1.0.41"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_identity_authentication/-/@wix/auto_sdk_identity_authentication-1.0.41.tgz#ee73ad0f8191ff04373eca6cba7550aee4808916"
-  integrity sha512-at8Q24UlK5GLAw1IIN7e8LwMuTLJHn3c1hUeBIyj0zqoasocWwyPKdVr6mXxnN63A9+sshLhKGmVq1JuoLS9+Q==
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_identity_recovery/-/@wix/auto_sdk_identity_recovery-1.0.41.tgz#98ab7697e93d298748cf54206fd056ac08325c9a"
+  integrity sha512-pb6d2mvjlxNupFLq6FWk/IDTRnbPu+/MENhvSvlgTSTTYX5dfQHsyGS+8qJH7YeVtlEB5nIKmNEfAfsQCfv9CQ==
   dependencies:
-    "@wix/sdk-runtime" "^1.0.0"
-    "@wix/sdk-types" "^1.15.0"
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
 
-"@wix/auto_sdk_identity_oauth@1.0.32":
-  version "1.0.32"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_identity_oauth/-/@wix/auto_sdk_identity_oauth-1.0.32.tgz#5fc60a1974dd7255814fbe196bb97d6c8c13cc2a"
-  integrity sha512-BO+gvllsNAAgbKlp1FDrv1eCQp/3xn75314Jn4TGAcBIjE30LzXPTwiYzGIn7T90jrlzi07GsPf9MtutTxieUg==
+"@wix/auto_sdk_identity_verification@1.0.41":
+  version "1.0.41"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_identity_verification/-/@wix/auto_sdk_identity_verification-1.0.41.tgz#60111cbaebaebbe92691975f4bea388f5c65336d"
+  integrity sha512-HBIzPHIsCg1FYNkPV6fS/5o/4PvIawO0rjg5ufba421L9URXthZSNx9whwBMxW7Q29F6uwMoLLVqFsSvJ6kvgw==
   dependencies:
-    "@wix/sdk-runtime" "^1.0.0"
-    "@wix/sdk-types" "^1.15.0"
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
 
-"@wix/auto_sdk_identity_recovery@1.0.38":
-  version "1.0.38"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_identity_recovery/-/@wix/auto_sdk_identity_recovery-1.0.38.tgz#1dd2f2ffedaa0401c9827dbc09506851f2c9a595"
-  integrity sha512-ak+kwGq8wG1LIxmn2KtLSOJBB23Z1JFjOJrFhbrC7a+zcZ7I1D37W/wNjDynXo8DXwXFVwtqCQ/tAOlsNbovCQ==
+"@wix/auto_sdk_redirects_redirects@1.0.40":
+  version "1.0.40"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_redirects_redirects/-/@wix/auto_sdk_redirects_redirects-1.0.40.tgz#7cb609f2adbb19be9186513bb637dcabc2c67866"
+  integrity sha512-rydiZ6PVRafrQtUhzz2NGpfL+2Jd8PNDhWbHRHvZpNEqF5L/0DZ50PHMvsm0Evs2jmsj4gC/xo7bbZXe0BnvvQ==
   dependencies:
-    "@wix/sdk-runtime" "^1.0.0"
-    "@wix/sdk-types" "^1.15.0"
-
-"@wix/auto_sdk_identity_verification@1.0.39":
-  version "1.0.39"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_identity_verification/-/@wix/auto_sdk_identity_verification-1.0.39.tgz#07600e8089f45c31b48140f19e9a34ae11c54282"
-  integrity sha512-t25mdtp7+8J5LOJehC7yF64px0NA1r1OyFoydXS+CJKuGYyQv4IItEyoOkvCDSfUbnEUvTa+7IfNWvlUzbE9Hw==
-  dependencies:
-    "@wix/sdk-runtime" "^1.0.0"
-    "@wix/sdk-types" "^1.15.0"
-
-"@wix/auto_sdk_redirects_redirects@1.0.37":
-  version "1.0.37"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/auto_sdk_redirects_redirects/-/@wix/auto_sdk_redirects_redirects-1.0.37.tgz#160e16fdacc38371a8ed93179ccb8024cbd5036e"
-  integrity sha512-NN7EPziOsSHGLBNRo0Czofm9q/zwukoI27+38kLeGg8xdT6PCUFpg/IePdBHQMNFBM/b5jmrwjsoep6mBlO7LQ==
-  dependencies:
-    "@wix/sdk-runtime" "^1.0.0"
-    "@wix/sdk-types" "^1.15.0"
+    "@wix/sdk-runtime" "^1.0.8"
+    "@wix/sdk-types" "^1.17.4"
 
 "@wix/data@^1.0.0", "@wix/data@^1.0.121":
-  version "1.0.382"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/data/-/@wix/data-1.0.382.tgz#a1290275db1eb3fc8bfd27ea40b5d27a66a4c353"
-  integrity sha512-G5bAWwOpD5mRWHxxmRNdo1kxeIJ3lsQUBpL0pyGtPg5lnHmbI8RMRA6u+u64whCH0K5CqXiQZZhUrQon0MJWsw==
+  version "1.0.418"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/data/-/@wix/data-1.0.418.tgz#659b5916d1f8a7422bb065c12f5b563d2a0521d0"
+  integrity sha512-Kuel1JYBhIuscSIRBY+L2XEvJK3tMPYGGg+PJeZYJO3vjugHqz8MQutOG0LRKTs7ME6NvM0XDflLtrOW7wwCNA==
   dependencies:
-    "@wix/auto_sdk_data_backups" "1.0.41"
-    "@wix/auto_sdk_data_collections" "1.0.57"
-    "@wix/auto_sdk_data_data-sync-jobs" "1.0.8"
-    "@wix/auto_sdk_data_external-database" "1.0.24"
-    "@wix/auto_sdk_data_external-database-connections" "1.0.40"
-    "@wix/auto_sdk_data_indexes" "1.0.43"
-    "@wix/auto_sdk_data_movement-jobs" "1.0.37"
-    "@wix/auto_sdk_data_permissions" "1.0.41"
-    "@wix/auto_sdk_data_sharing" "1.0.12"
-    "@wix/auto_sdk_data_tasks" "1.0.32"
+    "@wix/auto_sdk_data_backups" "1.0.42"
+    "@wix/auto_sdk_data_collections" "1.0.69"
+    "@wix/auto_sdk_data_data-sync-jobs" "1.0.13"
+    "@wix/auto_sdk_data_external-database" "1.0.25"
+    "@wix/auto_sdk_data_external-database-connections" "1.0.41"
+    "@wix/auto_sdk_data_indexes" "1.0.46"
+    "@wix/auto_sdk_data_movement-jobs" "1.0.45"
+    "@wix/auto_sdk_data_permissions" "1.0.42"
+    "@wix/auto_sdk_data_sharing" "1.0.15"
+    "@wix/auto_sdk_data_tasks" "1.0.33"
     "@wix/headless-cms" "^0.0.45"
-    "@wix/wix-data-items-sdk" "1.0.473"
+    "@wix/wix-data-items-sdk" "^1.0.503"
 
 "@wix/error-handler-types@^1.19.0":
   version "1.19.0"
@@ -682,18 +682,10 @@
   dependencies:
     "@babel/runtime" "^7.28.2"
 
-"@wix/filter-builder@1.0.231":
-  version "1.0.231"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/filter-builder/-/@wix/filter-builder-1.0.231.tgz#b67ddc47bdf1bf37d30f033976f78d7048bef891"
-  integrity sha512-zAHZSWV1nH3Wua5c5gfow0N65Gnv6Hj9jHQebkifR6dg6V8ANUsWoZbgcAoD6F7jIIeGHRQ0VVcfWXDbrtLt5Q==
-  dependencies:
-    "@babel/runtime" "^7.28.4"
-    tslib "^2.8.1"
-
-"@wix/filter-builder@1.0.235":
-  version "1.0.235"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/filter-builder/-/@wix/filter-builder-1.0.235.tgz#fe0d18c31d2128bca7be25903962f2daeabd92bb"
-  integrity sha512-mDULQBOpP88b8TfChqA7vkmUNSCjd2LLobpGYgJSU92T4Mi4voqT8Ty/VmRPuLUW1tg+/pzxKKqpPI1H3m2KNg==
+"@wix/filter-builder@1.0.236":
+  version "1.0.236"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/filter-builder/-/@wix/filter-builder-1.0.236.tgz#7d84d76e774f3b592349a685665c53f673f63e29"
+  integrity sha512-KMtcHm8ZxK8ldIbwur6hduX9zO1zNUTQ1Vs32mxFlEiOQhoUjpktCdjzN4daL3bjdiQZ3M0+IWMc+nY9ZVMfXw==
   dependencies:
     "@babel/runtime" "^7.28.4"
     tslib "^2.8.1"
@@ -740,19 +732,19 @@
     "@radix-ui/react-slot" "^1.2.3"
 
 "@wix/identity@^1.0.104":
-  version "1.0.190"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/identity/-/@wix/identity-1.0.190.tgz#ba555064bb8da63954defcd10e08cb7690aef682"
-  integrity sha512-mzn4psHc0BK6dGrymp00NbQG12NWIvIMSQYkKN2n3HM065XLTzHrHjRMuK0NVBZzuwS3SxaXQ4++EYDyURZhlg==
+  version "1.0.193"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/identity/-/@wix/identity-1.0.193.tgz#2688a32cce359435929aa63927e4b10bfb5b3455"
+  integrity sha512-aWVMuwkGpts608VW3hi1C+YC25x/oAvRBxzpGz7cQZbPvU4vryE0B7ctr8SGnS0Z02UGdmZ26Cn/PK1fAtxeqQ==
   dependencies:
-    "@wix/auto_sdk_identity_authentication" "1.0.41"
-    "@wix/auto_sdk_identity_oauth" "1.0.32"
-    "@wix/auto_sdk_identity_recovery" "1.0.38"
-    "@wix/auto_sdk_identity_verification" "1.0.39"
+    "@wix/auto_sdk_identity_authentication" "1.0.44"
+    "@wix/auto_sdk_identity_oauth" "1.0.35"
+    "@wix/auto_sdk_identity_recovery" "1.0.41"
+    "@wix/auto_sdk_identity_verification" "1.0.41"
 
 "@wix/image-kit@^1.114.0":
-  version "1.119.0"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/image-kit/-/@wix/image-kit-1.119.0.tgz#90ff4c3d59c31ef829aa7e1500911fbc96ee24cc"
-  integrity sha512-edRzS58wP6W3fVgJE/USwL+bSaTJ0Q5sAj76xbLrnc9lcsgQOJKEEfbTqbXJAxk5L5GsIWaq5sYie6wNSpFVbQ==
+  version "1.121.0"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/image-kit/-/@wix/image-kit-1.121.0.tgz#55050f80677208be09b49b2b21e1b635002bb64b"
+  integrity sha512-jOMnUDr9R+6O2cyGdbKYUcInMQ3UEwE4ImS36UhgnLD8ueMIYRuCuEKhdYDROg3N9CFY/cC2FiaCbfpPxp/dQg==
   dependencies:
     "@babel/runtime" "^7.26.0"
     tslib "^2.8.1"
@@ -763,11 +755,11 @@
   integrity sha512-nlv4jwQMewjzPIWFF9rnKf9WhVojj67oLtvilYXfi+lnhXyVlYOfqCnL3qLJuKtJ6wT5XIJdt0Fj0su2NM5taQ==
 
 "@wix/redirects@^1.0.0", "@wix/redirects@^1.0.70":
-  version "1.0.109"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/redirects/-/@wix/redirects-1.0.109.tgz#1a6c85c9739138112d50d5e963754a9ca36e41ef"
-  integrity sha512-YrgsKcmE9U5lMPV13eb9PocN9QNX0gk2M48c1o77rr+ZULNsH7OV25Q1wl6/QDrGrEoM6qwjGB3bvvoyw5aWHw==
+  version "1.0.112"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/redirects/-/@wix/redirects-1.0.112.tgz#0fdb3fd4178b1e699f2b4ea8a379d4e8768c1a9b"
+  integrity sha512-8zZxYG3HR1qdXTdhkau712SbPCOuZqBsnvkc+/UfDEYmm0wArQZEuJuFNAKLDqM3b+lfpz6o/73hEmqDVcjCSw==
   dependencies:
-    "@wix/auto_sdk_redirects_redirects" "1.0.37"
+    "@wix/auto_sdk_redirects_redirects" "1.0.40"
 
 "@wix/sdk-context@0.0.1":
   version "0.0.1"
@@ -779,13 +771,13 @@
   resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/sdk-react-context/-/@wix/sdk-react-context-1.0.2.tgz#f17a4951714b50007fe27a10c018e4abf27f3f8a"
   integrity sha512-dX1A+IlLVzsW0pE7ZyhtJHNEeeCYnu/suELnHm4FrxX5alJl1JaEpHbvjuaCt6kD/kDP1iIu9Pu6AvyJUCtYrg==
 
-"@wix/sdk-runtime@1.0.4":
-  version "1.0.4"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/sdk-runtime/-/@wix/sdk-runtime-1.0.4.tgz#bdc44b04dff2016aa1287afd6c25e6cbbf435583"
-  integrity sha512-i6d7ramcQEnIa9YYhMoEOu1jxhGJAL9qLTP+K34rbVd3gb7557AH1iJUWaeMUucYpeQURV6HNNX/oxMMBbgGuA==
+"@wix/sdk-runtime@1.0.9", "@wix/sdk-runtime@^1.0.8":
+  version "1.0.9"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/sdk-runtime/-/@wix/sdk-runtime-1.0.9.tgz#78deb69cdba48d6fb9b89822d4c8205b58aad943"
+  integrity sha512-oPSFvD8yBLA9nQ7/XVFn8rorniD90OgYAMqwDsiauIwjCbQaqxENAaswHfJJNaLbgAnSmey6yQcb/raLIxIEUg==
   dependencies:
     "@wix/sdk-context" "0.0.1"
-    "@wix/sdk-types" "1.17.2"
+    "@wix/sdk-types" "1.17.5"
 
 "@wix/sdk-runtime@^0.7.0":
   version "0.7.0"
@@ -794,14 +786,6 @@
   dependencies:
     "@wix/sdk-context" "0.0.1"
     "@wix/sdk-types" "1.14.0"
-
-"@wix/sdk-runtime@^1.0.0", "@wix/sdk-runtime@^1.0.6":
-  version "1.0.6"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/sdk-runtime/-/@wix/sdk-runtime-1.0.6.tgz#06c1412c2070dcbcb8026e8ba448e077a91ead63"
-  integrity sha512-bzhkWyNLeFog4CLEIcB9vpWxBDckEjYuIrzQBtbWmVyHk54ebV+fpU/iwu/OgwY7iBvtwp9BLXA8LWArXQj3jQ==
-  dependencies:
-    "@wix/sdk-context" "0.0.1"
-    "@wix/sdk-types" "1.17.3"
 
 "@wix/sdk-types@1.14.0":
   version "1.14.0"
@@ -812,35 +796,26 @@
     "@wix/monitoring-types" "^0.12.0"
     type-fest "^4.41.0"
 
-"@wix/sdk-types@1.17.2":
-  version "1.17.2"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/sdk-types/-/@wix/sdk-types-1.17.2.tgz#3a9c1e208b2c4b496351c7108eea152c6244c977"
-  integrity sha512-e8XGqos3837jKfR0STyDJOrNp1AMivyw0PD7cG74/+v2Cv5RtHpVNio+4Kd0sT1Ykeo4jqN03ikfjVnD4way+w==
-  dependencies:
-    "@wix/error-handler-types" "^1.19.0"
-    "@wix/monitoring-types" "^0.12.0"
-    type-fest "^4.41.0"
-
-"@wix/sdk-types@1.17.3", "@wix/sdk-types@^1.14.0", "@wix/sdk-types@^1.15.0", "@wix/sdk-types@^1.17.3":
-  version "1.17.3"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/sdk-types/-/@wix/sdk-types-1.17.3.tgz#24d0277046e5c2444615e2e8b39c5f777c65f5b3"
-  integrity sha512-5ZmLPmY615NMw59F5NW/yIxCkrkmmornFBtFcvWYc1qarrDqk7S0LVE72/u4oGQW7ku829dm6WSxmN5YV0QgNg==
+"@wix/sdk-types@1.17.5", "@wix/sdk-types@^1.14.0", "@wix/sdk-types@^1.17.4":
+  version "1.17.5"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/sdk-types/-/@wix/sdk-types-1.17.5.tgz#b865820498fe4daa5b12734c27b8eb92a978c77e"
+  integrity sha512-5jS3tU3H4tgHY0wK6erZ+XmQjkD+LspZJaGYliYSbPqpr1rSTXHZq7CLIwzL5x+wY/haptADWti4okhl/XtQNw==
   dependencies:
     "@wix/error-handler-types" "^1.19.0"
     "@wix/monitoring-types" "^0.12.0"
     type-fest "^4.41.0"
 
 "@wix/sdk@^1.12.8", "@wix/sdk@^1.15.24", "@wix/sdk@^1.17.1":
-  version "1.21.2"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/sdk/-/@wix/sdk-1.21.2.tgz#8f8948ead9ed67a3dfc82c638e10fcad03f17a62"
-  integrity sha512-E0kQdUQAh8Sjm0MxMIfcFCbR7TJyyq7EtdPIoRUqg41xUXGU2WNUrt0k62J3qJNNEXXowdINcM+Eu0Tp4ZmL0Q==
+  version "1.21.4"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/sdk/-/@wix/sdk-1.21.4.tgz#0d1451afab19e12323b6bd2b45c6e659d18d826d"
+  integrity sha512-1iUJdbOKKc5eFdH6/Xc+xujSNrAXf9002k1UwCb+DVWzP+09NsZxtZDYKSVh1Fb6mLshj/O/e/uasrgkRlKT/w==
   dependencies:
     "@wix/identity" "^1.0.104"
     "@wix/image-kit" "^1.114.0"
     "@wix/redirects" "^1.0.70"
     "@wix/sdk-context" "0.0.1"
-    "@wix/sdk-runtime" "1.0.4"
-    "@wix/sdk-types" "1.17.2"
+    "@wix/sdk-runtime" "1.0.9"
+    "@wix/sdk-types" "1.17.5"
     jose "^5.10.0"
     type-fest "^4.41.0"
   optionalDependencies:
@@ -872,39 +847,23 @@
     "@wix/sdk-context" "0.0.1"
     "@wix/services-definitions" "^1.0.1"
 
-"@wix/wix-data-items-common@1.0.276":
-  version "1.0.276"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/wix-data-items-common/-/@wix/wix-data-items-common-1.0.276.tgz#33a71be9b0e84d540e0254757a32e465522e1ac7"
-  integrity sha512-2SgQ4UG5X6mSpaAw1RZZ8dyfanXpZfIS7KbQI2gqoHjWm1kP1mTSnqtqFqCLByCNLcpD0x1xHDpVuqCFjBxOWg==
+"@wix/wix-data-items-common@1.0.298":
+  version "1.0.298"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/wix-data-items-common/-/@wix/wix-data-items-common-1.0.298.tgz#a3bf3a523ba8ca5e1b7c7cd2ab2f8e469f601edf"
+  integrity sha512-cd3jojHHT/gV4LT9dUF+fymKZk6tmM6/ghxUdWm5tR6uyqnDXxd1P1p6rg2kI5zYMa7gxueHSdIBelyp611vJw==
   dependencies:
     "@babel/runtime" "^7.28.4"
-    "@wix/filter-builder" "1.0.231"
+    "@wix/filter-builder" "1.0.236"
+    "@wix/sdk-runtime" "^1.0.8"
 
-"@wix/wix-data-items-common@1.0.280":
-  version "1.0.280"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/wix-data-items-common/-/@wix/wix-data-items-common-1.0.280.tgz#a5d4151e1f0aa9af59841aa0e14c87ffbac1dd4e"
-  integrity sha512-6c+pbqc8YzW6Czid3tpcJzhSb9GHiAcJ127ThSs18PInJN3LDufCTSFu4dmGAQYKl6fAMJUfIIYwBSkblUnZOQ==
-  dependencies:
-    "@babel/runtime" "^7.28.4"
-    "@wix/filter-builder" "1.0.235"
-
-"@wix/wix-data-items-sdk@1.0.473":
-  version "1.0.473"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/wix-data-items-sdk/-/@wix/wix-data-items-sdk-1.0.473.tgz#a6cc3080bd0c56306435b1c5cf2c34114e5318a1"
-  integrity sha512-TO70XPHO3afATSNWt/1cRjdVhVMdqo0E5aBGHnc4e2J1SArmwbdKGAjJVOMknw36qxG+RSIYXZjVUTrom0MTbg==
+"@wix/wix-data-items-sdk@^1.0.170", "@wix/wix-data-items-sdk@^1.0.503":
+  version "1.0.507"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/wix-data-items-sdk/-/@wix/wix-data-items-sdk-1.0.507.tgz#317618995483255d7540dc1207cfc30459be9e2e"
+  integrity sha512-zNjr2vXUezk4XzfzJthm83bViAIrMIXz+Gd71dVSV2XeCdjD4ebf0D8RKCc1cRvbhZ4WxjUlBtGRwobhR56ynQ==
   dependencies:
     "@wix/sdk-runtime" "^0.7.0"
     "@wix/sdk-types" "^1.14.0"
-    "@wix/wix-data-items-common" "1.0.276"
-
-"@wix/wix-data-items-sdk@^1.0.170":
-  version "1.0.477"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/@wix/wix-data-items-sdk/-/@wix/wix-data-items-sdk-1.0.477.tgz#5420d29fd85097e291c1a7a1973efb00c33e0684"
-  integrity sha512-nJMagsk7PLKbhlYISU54i6O0+Q6i1sWWGnPNEjr1AEPiB0KWI66ztUbgvggiStobs0ubxCzD/qbtCmAP3ThOUQ==
-  dependencies:
-    "@wix/sdk-runtime" "^0.7.0"
-    "@wix/sdk-types" "^1.14.0"
-    "@wix/wix-data-items-common" "1.0.280"
+    "@wix/wix-data-items-common" "1.0.298"
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
@@ -1676,9 +1635,9 @@ graphemer@^1.4.0:
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
 "graphql@^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0":
-  version "16.12.0"
-  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/graphql/-/graphql-16.12.0.tgz#28cc2462435b1ac3fdc6976d030cef83a0c13ac7"
-  integrity sha512-DKKrynuQRne0PNpEbzuEdHlYOMksHSUI8Zc9Unei5gTsMNA2/vMpoMz/yKba50pejK56qj98qM0SjYxAKi13gQ==
+  version "16.13.0"
+  resolved "https://npm.dev.wixpress.com/api/npm/npm-repos/graphql/-/graphql-16.13.0.tgz#726857e897e87d54412d62356ec0b6b76bfab409"
+  integrity sha512-uSisMYERbaB9bkA9M4/4dnqyktaEkf1kMHNKq/7DHyxVeWqHQ2mBmVqm5u6/FVHwF3iCNalKcg82Zfl+tffWoA==
 
 has-flag@^4.0.0:
   version "4.0.0"
