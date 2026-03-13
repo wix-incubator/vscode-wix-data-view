@@ -5,7 +5,7 @@ import { DataCollectionNode, DataCollectionTree } from './dataTree';
 import { DefaultWixDataCollectionProvider, WixDataCollectionProvider } from './wix/dataCollectionProvider';
 import { ConfigurationPanel } from './panels/configurationPanel';
 import { WixCredentialManager } from './auth/credentialManager';
-import { runQuery, showQueryEditor } from './queryEditor';
+import { runQuery, showAddFieldEditor, showDeleteFieldEditor, showQueryEditor } from './queryEditor';
 
 export async function activate(context: vscode.ExtensionContext) {
 	const outputChannel = vscode.window.createOutputChannel('Wix Data View');
@@ -65,6 +65,18 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('vscode-wix-data-view.new-query', async () => {
 			await showQueryEditor(context);
+		})
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('vscode-wix-data-view.add-field', async (node?: DataCollectionNode) => {
+			await showAddFieldEditor(context, node?.collection?._id);
+		})
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('vscode-wix-data-view.delete-field', async (node?: DataCollectionNode) => {
+			await showDeleteFieldEditor(context, node?.collection?._id, node?.field?.key);
 		})
 	);
 

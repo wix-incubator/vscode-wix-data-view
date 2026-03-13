@@ -34,10 +34,12 @@ You can copy the site ID from the URL. In this example the Site ID is ff1e47ad-6
 
 ## Usage
 
-The Plugin allows calling arbitrary Wix Data APIs. The following APIs are supported:
+The Plugin allows calling some of Wix Data APIs. The following APIs are supported:
 * [Wix Data Items](https://dev.wix.com/docs/velo/api-reference/wix-data/introduction)
 * [Collections](https://dev.wix.com/docs/sdk/backend-modules/data/collections/introduction)
 * [Indexes](https://dev.wix.com/docs/sdk/backend-modules/data/indexes/introduction)
+* [Backups](https://dev.wix.com/docs/api-reference/business-solutions/cms/operations/backups/introduction)
+* [Data Movement Jobs](https://dev.wix.com/docs/api-reference/business-solutions/cms/operations/data-movement-jobs/introduction)
 
 It will run queries like:
 
@@ -51,6 +53,14 @@ collections.listDataCollections()
 
 ```javascript
 indexes.listIndexes('Items')
+```
+
+```javascript
+backups.listBackups()
+```
+
+```javascript
+movementJobs.queryJobs({})
 ```
 
 To run the query execute 'Wix Data: Write Query' command, this will open the query editor. Execute by clicking the triangle icon.

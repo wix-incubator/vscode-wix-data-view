@@ -38,7 +38,7 @@ function fieldNodes(collection: collections.DataCollection): DataCollectionNode[
             undefined,
             undefined,
             NodeType.FIELD,
-            undefined,
+            collection,
             field
         )
     );

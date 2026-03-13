@@ -2,22 +2,56 @@ import worker from 'node:worker_threads';
 import * as vscode from 'vscode';
 import { WixCredentialManager } from './auth/credentialManager';
 
-export async function showQueryEditor(context: vscode.ExtensionContext, collection?: string) {
+async function showUntitledEditor(filePrefix: string, initialContent?: string) {
     const rnd = Math.random().toString(36).substring(2);
     const documentUri = vscode.Uri.from({
-        path: `query.${rnd}.wdq.js`,
+        path: `${filePrefix}.${rnd}.wdq.js`,
         scheme: 'untitled',
     });
 
     const document = await vscode.workspace.openTextDocument(documentUri);
     const editor = await vscode.window.showTextDocument(document);
 
-    await editor.edit((editBuilder) => {
-        if (collection) {
-            editBuilder.insert(new vscode.Position(0, 0), `wixData.query('${collection}').find()`);
-        }
-    });
+    if (initialContent) {
+        await editor.edit((editBuilder) => {
+            editBuilder.insert(new vscode.Position(0, 0), initialContent);
+        });
+    }
 
+    return editor;
+}
+
+export async function showQueryEditor(context: vscode.ExtensionContext, collection?: string) {
+    await showUntitledEditor(
+        'query',
+        collection ? `wixData.query('${collection}').find()` : undefined
+    );
+}
+
+export async function showAddFieldEditor(context: vscode.ExtensionContext, collection?: string) {
+    await showUntitledEditor(
+        'add-field',
+        collection
+            ? `collections.createDataCollectionField('${collection}', {
+    field: {
+        key: '<choose a key>',
+        displayName: '<choose a display name>',
+        type: 'TEXT'
+    }
+})`
+            : undefined
+    );
+}
+
+export async function showDeleteFieldEditor(context: vscode.ExtensionContext, collection?: string, fieldKey?: string) {
+    await showUntitledEditor(
+        'delete-field',
+        collection && fieldKey
+            ? `collections.deleteDataCollectionField('${collection}', {
+    fieldKey: '${fieldKey}'
+})`
+            : undefined
+    );
 }
 
 export async function showResult(context: vscode.ExtensionContext, result: string) {

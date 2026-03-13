@@ -71,6 +71,7 @@ const s = suite('Wix Data Viewer', async () => {
 		assert.equal(field1.label, 'field1: TEXT (\'Text Field\')');
 		assert.equal(field1.type, 1);
 		assert.equal(field1.field?.key, 'field1');
+		assert.equal(field1.collection?._id, 'c1');
 		assert.ok(field1.children === undefined);
 
 		const namespaceRoot = root[1];
@@ -110,6 +111,51 @@ const s = suite('Wix Data Viewer', async () => {
 
 		const f1clipboard = await vscode.env.clipboard.readText();
 		assert.equal(f1clipboard, 'field1');
+	});
+
+	test('Should open add field editor for selected collection', async () => {
+		const node = {
+			collection: {
+				_id: 'Books',
+			},
+		};
+
+		await vscode.commands.executeCommand('vscode-wix-data-view.add-field', node);
+
+		const editor = vscode.window.activeTextEditor;
+		assert.ok(editor);
+		assert.equal(
+			editor?.document.getText(),
+			`collections.createDataCollectionField('Books', {
+    field: {
+        key: '<choose a key>',
+        displayName: '<choose a display name>',
+        type: 'TEXT'
+    }
+})`
+		);
+	});
+
+	test('Should open delete field editor for selected field', async () => {
+		const node = {
+			collection: {
+				_id: 'Books',
+			},
+			field: {
+				key: 'author',
+			},
+		};
+
+		await vscode.commands.executeCommand('vscode-wix-data-view.delete-field', node);
+
+		const editor = vscode.window.activeTextEditor;
+		assert.ok(editor);
+		assert.equal(
+			editor?.document.getText(),
+			`collections.deleteDataCollectionField('Books', {
+    fieldKey: 'author'
+})`
+		);
 	});
 });
 

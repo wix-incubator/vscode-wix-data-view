@@ -45,6 +45,16 @@
         "icon": "$(play)"
       },
       {
+        "command": "vscode-wix-data-view.add-field",
+        "title": "Add Field",
+        "icon": "$(add)"
+      },
+      {
+        "command": "vscode-wix-data-view.delete-field",
+        "title": "Delete Field",
+        "icon": "$(trash)"
+      },
+      {
         "command": "vscode-wix-data-view.copy-id",
         "title": "Copy ID",
         "icon": "$(clippy)"
@@ -91,6 +101,16 @@
           "command": "vscode-wix-data-view.open-collection",
           "when": "view == vscode-wix-data-view.collection-tree && viewItem == collection",
           "title": "View Collection Data"
+        },
+        {
+          "command": "vscode-wix-data-view.add-field",
+          "when": "view == vscode-wix-data-view.collection-tree && viewItem == collection",
+          "title": "Add Field"
+        },
+        {
+          "command": "vscode-wix-data-view.delete-field",
+          "when": "view == vscode-wix-data-view.collection-tree && viewItem == field",
+          "title": "Delete Field"
         },
         {
           "command": "vscode-wix-data-view.copy-id",
