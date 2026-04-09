@@ -136,6 +136,30 @@ const s = suite('Wix Data Viewer', async () => {
 		);
 	});
 
+	test('Should open update field editor for selected field', async () => {
+		const node = {
+			collection: {
+				_id: 'Books',
+			},
+			field: {
+				key: 'author',
+				type: collections.Type.TEXT,
+				displayName: 'Author',
+			},
+		};
+
+		await vscode.commands.executeCommand('vscode-wix-data-view.update-field', node);
+
+		const editor = vscode.window.activeTextEditor;
+		assert.ok(editor);
+		assert.equal(
+			editor?.document.getText(),
+			`collections.updateDataCollectionField('Books', {
+    field: ${JSON.stringify({ key: 'author', type: 'TEXT', displayName: 'Author' }, null, 4)}
+})`
+		);
+	});
+
 	test('Should open delete field editor for selected field', async () => {
 		const node = {
 			collection: {

@@ -1,5 +1,7 @@
 import worker from 'node:worker_threads';
 import * as vscode from 'vscode';
+import { collections } from '@wix/data';
+import { pick } from 'lodash';
 import { WixCredentialManager } from './auth/credentialManager';
 
 async function showUntitledEditor(filePrefix: string, initialContent?: string) {
@@ -38,6 +40,17 @@ export async function showAddFieldEditor(context: vscode.ExtensionContext, colle
         displayName: '<choose a display name>',
         type: 'TEXT'
     }
+})`
+            : undefined
+    );
+}
+
+export async function showUpdateFieldEditor(context: vscode.ExtensionContext, collection?: string, field?: collections.Field) {
+    await showUntitledEditor(
+        'update-field',
+        collection && field
+            ? `collections.updateDataCollectionField('${collection}', {
+    field: ${JSON.stringify(pick(field, 'key', 'type', 'displayName', 'description', 'required'), null, 4)}
 })`
             : undefined
     );

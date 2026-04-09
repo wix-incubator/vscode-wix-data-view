@@ -50,6 +50,11 @@
         "icon": "$(add)"
       },
       {
+        "command": "vscode-wix-data-view.update-field",
+        "title": "Update Field",
+        "icon": "$(edit)"
+      },
+      {
         "command": "vscode-wix-data-view.delete-field",
         "title": "Delete Field",
         "icon": "$(trash)"
@@ -106,6 +111,11 @@
           "command": "vscode-wix-data-view.add-field",
           "when": "view == vscode-wix-data-view.collection-tree && viewItem == collection",
           "title": "Add Field"
+        },
+        {
+          "command": "vscode-wix-data-view.update-field",
+          "when": "view == vscode-wix-data-view.collection-tree && viewItem == field",
+          "title": "Update Field"
         },
         {
           "command": "vscode-wix-data-view.delete-field",
