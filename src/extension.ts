@@ -103,6 +103,17 @@ export async function activate(context: vscode.ExtensionContext) {
 			dataCollectionTree.copyId(node);
 		})
 	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('vscode-wix-data-view.manage-in-dashboard', async (node: DataCollectionNode) => {
+			const siteId = credentialManager.getSiteId();
+			const collectionId = node.collection?._id;
+			if (siteId && collectionId) {
+				const url = `https://manage.wix.com/dashboard/${siteId}/wix-cms/data/${collectionId}?referralInfo=wixDataView`;
+				vscode.env.openExternal(vscode.Uri.parse(url));
+			}
+		})
+	);
 }
 
 // This method is called when your extension is deactivated

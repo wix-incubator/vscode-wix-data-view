@@ -68,6 +68,11 @@
         "command": "vscode-wix-data-view.create-collection",
         "title": "Wix Data: Create Collection",
         "icon": "$(add)"
+      },
+      {
+        "command": "vscode-wix-data-view.manage-in-dashboard",
+        "title": "Manage in Wix Dashboard",
+        "icon": "$(link-external)"
       }
     ],
     "viewsContainers": {
@@ -136,6 +141,11 @@
           "command": "vscode-wix-data-view.copy-id",
           "when": "view == vscode-wix-data-view.collection-tree && (viewItem == collection || viewItem == field)",
           "title": "Copy ID"
+        },
+        {
+          "command": "vscode-wix-data-view.manage-in-dashboard",
+          "when": "view == vscode-wix-data-view.collection-tree && viewItem == collection",
+          "title": "Manage in Wix Dashboard"
         }
       ],
       "editor/title/run": [
