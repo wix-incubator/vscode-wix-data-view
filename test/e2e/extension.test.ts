@@ -160,6 +160,33 @@ const s = suite('Wix Data Viewer', async () => {
 		);
 	});
 
+	test('Should open create collection editor', async () => {
+		await vscode.commands.executeCommand('vscode-wix-data-view.create-collection');
+
+		const editor = vscode.window.activeTextEditor;
+		assert.ok(editor);
+		assert.equal(
+			editor?.document.getText(),
+			`collections.createDataCollection({
+    _id: '<id>',
+    displayName: '<displayName>',
+    fields: [
+        {
+            key: 'title',
+            displayName: 'Title',
+            type: 'TEXT'
+        }
+    ],
+    permissions: {
+        insert: 'ADMIN',
+        update: 'ADMIN',
+        remove: 'ADMIN',
+        read: 'ADMIN'
+    }
+})`
+		);
+	});
+
 	test('Should open delete field editor for selected field', async () => {
 		const node = {
 			collection: {

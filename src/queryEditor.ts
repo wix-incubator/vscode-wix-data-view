@@ -30,6 +30,29 @@ export async function showQueryEditor(context: vscode.ExtensionContext, collecti
     );
 }
 
+export async function showCreateCollectionEditor(context: vscode.ExtensionContext) {
+    await showUntitledEditor(
+        'create-collection',
+        `collections.createDataCollection({
+    _id: '<id>',
+    displayName: '<displayName>',
+    fields: [
+        {
+            key: 'title',
+            displayName: 'Title',
+            type: 'TEXT'
+        }
+    ],
+    permissions: {
+        insert: 'ADMIN',
+        update: 'ADMIN',
+        remove: 'ADMIN',
+        read: 'ADMIN'
+    }
+})`
+    );
+}
+
 export async function showAddFieldEditor(context: vscode.ExtensionContext, collection?: string) {
     await showUntitledEditor(
         'add-field',

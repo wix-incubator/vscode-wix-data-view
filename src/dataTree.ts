@@ -201,7 +201,7 @@ export class DataCollectionTree implements vscode.TreeDataProvider<DataCollectio
     }
 
     copyId(node: DataCollectionNode): void {
-        vscode.env.clipboard.writeText(node.collection?._id ?? node.field?.key ?? '');
+        vscode.env.clipboard.writeText(node.field?.key ?? node.collection?._id ?? '');
     }
 }
 

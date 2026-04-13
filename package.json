@@ -63,6 +63,11 @@
         "command": "vscode-wix-data-view.copy-id",
         "title": "Copy ID",
         "icon": "$(clippy)"
+      },
+      {
+        "command": "vscode-wix-data-view.create-collection",
+        "title": "Wix Data: Create Collection",
+        "icon": "$(add)"
       }
     ],
     "viewsContainers": {
@@ -87,6 +92,11 @@
       "view/title": [
         {
           "command": "vscode-wix-data-view.refresh-collections",
+          "when": "view == vscode-wix-data-view.collection-tree",
+          "group": "navigation"
+        },
+        {
+          "command": "vscode-wix-data-view.create-collection",
           "when": "view == vscode-wix-data-view.collection-tree",
           "group": "navigation"
         },
