@@ -6,9 +6,16 @@ import { DefaultWixDataCollectionProvider, WixDataCollectionProvider } from './w
 import { ConfigurationPanel } from './panels/configurationPanel';
 import { WixCredentialManager } from './auth/credentialManager';
 import { runQuery, showCreateCollectionEditor, showAddFieldEditor, showUpdateFieldEditor, showDeleteFieldEditor, showQueryEditor } from './queryEditor';
+import { cleanupQueryFiles, ensureQueryWorkspace, isAutocompleteEnabled } from './runner/queryWorkspace';
 
 export async function activate(context: vscode.ExtensionContext) {
 	const outputChannel = vscode.window.createOutputChannel('Wix Data View');
+
+	if (isAutocompleteEnabled()) {
+		await ensureQueryWorkspace(context);
+	}
+	await cleanupQueryFiles(); // start each session with a clean slate, even if disabled
+
 	const credentialManager = new WixCredentialManager(context);
 	const collectionProvider = new DefaultWixDataCollectionProvider(credentialManager, outputChannel);
 	const dataCollectionTree = new DataCollectionTree(collectionProvider);

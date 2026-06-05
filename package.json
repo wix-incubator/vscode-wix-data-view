@@ -18,6 +18,16 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Wix Data View",
+      "properties": {
+        "vscode-wix-data-view.queryEditor.enableAutocomplete": {
+          "type": "boolean",
+          "default": false,
+          "description": "Write query files to disk so VSCode provides type-aware auto-complete for the Wix Data SDK globals (wixData, collections, indexes, etc.). When off, queries open as in-memory untitled documents with no auto-complete."
+        }
+      }
+    },
     "commands": [
       {
         "command": "vscode-wix-data-view.refresh-collections",
