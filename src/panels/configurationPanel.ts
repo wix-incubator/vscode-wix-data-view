@@ -75,6 +75,7 @@ export class ConfigurationPanel {
         const auth = this.wixCredentialManager.getAuth();
         const apiKey = auth.type === 'APIKey' ? auth.apiKey : '';
         const siteId = this.wixCredentialManager.getSiteId();
+        const credentialStatus = this.getCredentialStatus();
 
         return `
             <!DOCTYPE html>
@@ -94,18 +95,25 @@ export class ConfigurationPanel {
                 <a href="https://support.wix.com/en/article/about-wix-api-keys">API keys here</a>.
                 This key should have at least List Sites and Wix Data permissions.
                 </p>
+                <p>
+                Alternatively, install Wix CLI and log in with <code>wix login</code> 
+                to automatically use your CLI credentials without saving an API key here. 
+                The extension will detect and use the CLI API key as long as no manual API key is saved.
+                </p>
+
+                ${credentialStatus}
 
                 <form>
                     <div>
                         <label for="apiKey">API Key</label>
-                        <input type="text" id="apiKey" name="apiKey" value="${apiKey}"/>
+                        <input type="text" id="apiKey" name="apiKey" value="${this.escapeAttribute(apiKey)}"/>
                     </div>
                     <div>
                         <label for="siteId">Site ID</label>
-                        <input type="text" id="siteId" name="siteId" value="${siteId}"/>
+                        <input type="text" id="siteId" name="siteId" value="${this.escapeAttribute(siteId)}"/>
                     </div>
                     <div>
-                        <button id="save">Save Configuration</button>
+                        <button id="save" type="button">Save Configuration</button>
                     </div>
                 </form>
 
@@ -113,6 +121,32 @@ export class ConfigurationPanel {
             </body>
             </html>
         `;
+    }
+
+    private getCredentialStatus(): string {
+        if (this.wixCredentialManager.isUsingWixCliApiKey()) {
+            return `
+                <div class="credential-status credential-status--active">
+                    <strong>Automatic Wix CLI credentials are in use.</strong>
+                    <span>The API key was detected from your Wix CLI login because no manual API key is saved.</span>
+                </div>
+            `;
+        }
+
+        return `
+            <div class="credential-status">
+                <strong>Automatic Wix CLI credentials are not in use.</strong>
+                <span>Saved manual credentials will be used.</span>
+            </div>
+        `;
+    }
+
+    private escapeAttribute(value: string): string {
+        return value
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
     }
 
 }

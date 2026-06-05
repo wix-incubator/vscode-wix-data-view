@@ -6,9 +6,15 @@ import * as vscode from 'vscode';
 
 const WIX_CLI_API_KEY_PATH = '.wix/auth/api-key.json';
 
+export enum ApiKeyAuthSourceType {
+    SecretStore = 'SecretStore',
+    WixCli = 'WixCli',
+}
+
 export class APIKeyAuthSource {
     private readonly context: vscode.ExtensionContext;
     private apiKey?: string;
+    private apiKeySource?: ApiKeyAuthSourceType;
     private ready: boolean = false;
 
     constructor(context: vscode.ExtensionContext) {
@@ -21,6 +27,7 @@ export class APIKeyAuthSource {
             .then((apiKey) => {
                 if (apiKey) {
                     this.apiKey = apiKey;
+                    this.apiKeySource = ApiKeyAuthSourceType.SecretStore;
                 } else {
                     this.apiKey = this.loadFromCliConfig();
                 }
@@ -33,22 +40,31 @@ export class APIKeyAuthSource {
         try {
             if (fs.existsSync(cliConfigPath)) {
                 const config = JSON.parse(fs.readFileSync(cliConfigPath, 'utf8'));
-                return config.token ?? '';
+                if (config.token) {
+                    this.apiKeySource = ApiKeyAuthSourceType.WixCli;
+                    return config.token;
+                }
             }
         } catch (error) {
             console.error('Failed to load API key from CLI config:', error);
         }
+        this.apiKeySource = undefined;
         return '';
     }
 
     public updateApiKey(apiKey: string): void {
         this.context.secrets.store('wixApiKey', apiKey);
         this.apiKey = apiKey;
+        this.apiKeySource = apiKey ? ApiKeyAuthSourceType.SecretStore : undefined;
         this.ready = true;
     }
 
     public getApiKey(): string {
         return this.apiKey ?? '';
+    }
+
+    public getApiKeySource(): ApiKeyAuthSourceType | undefined {
+        return this.apiKeySource;
     }
 
     public isReady(): boolean {

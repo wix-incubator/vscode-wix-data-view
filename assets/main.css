@@ -23,6 +23,26 @@ form > div {
     margin-bottom: 12px;
 }
 
+.credential-status {
+    border: 1px solid var(--vscode-editorWidget-border);
+    padding: 8px;
+    margin: 12px 0;
+}
+
+.credential-status strong,
+.credential-status span {
+    display: block;
+}
+
+.credential-status span {
+    color: var(--vscode-descriptionForeground);
+    margin-top: 4px;
+}
+
+.credential-status--active {
+    border-color: var(--vscode-testing-iconPassed);
+}
+
 .collection-item {
     display: grid;
     grid-template-columns: 1fr 1fr;

@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import { 
     APIKeyAuthSource, 
+    ApiKeyAuthSourceType,
     ConfigurationSiteIdSource, 
     WorkspaceWixConfigSiteIdSource,
 } from './credentialSources';
@@ -52,6 +53,10 @@ export class WixCredentialManager {
 
     private getApiKey(): string | undefined {
         return this.apiKeyAuthSource.getApiKey();
+    }
+
+    public isUsingWixCliApiKey(): boolean {
+        return this.apiKeyAuthSource.getApiKeySource() === ApiKeyAuthSourceType.WixCli;
     }
 
     public updateApiKey(apiKey: string): void {
