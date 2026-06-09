@@ -1,17 +1,21 @@
 # Wix Data Viewer
 
-This extension allows viewing structure of a Wix site database, as well as run queries against it.
+This extension lets you view the structure of a Wix site database, as well as run queries against it.
 
 ![Wix Data View screenshot](docs/screenshot1.png)
 
 ## Configuration
 
-To use the plugin:
+The extension will auto-configure if:
+* Wix CLI is installed on the system
+* plugin is running in online IDE hosted by Wix
+
+Alternatively, it's possible to manually configure the IDE:
 1. Open configuration panel
 2. Enter your API Key
-3. Enter site ID
+3. Enter Site ID
 
-You can enter configuration screen by clicking on the gear icon above the collection tree.
+You can open the configuration screen by clicking the gear icon above the collection tree.
 
 ![Configure Wix Data View](docs/configuration.png)
 
@@ -25,12 +29,12 @@ Click Generate API Key and select the following permissions:
 
 Click Generate Key. Use the key in the configuration.
 
-Next go to the dashboard of a site you want to connect to.
+Next, go to the dashboard of a site you want to connect to.
 
 The URL should look similar to:
 > https://manage.wix.com/dashboard/ff1e47ad-6562-40cc-9284-07901522f0e1/home
 
-You can copy the site ID from the URL. In this example the Site ID is ff1e47ad-6562-40cc-9284-07901522f0e1.
+You can copy the Site ID from the URL. In this example the Site ID is ff1e47ad-6562-40cc-9284-07901522f0e1.
 
 ## Usage
 
@@ -63,6 +67,6 @@ backups.listBackups()
 movementJobs.queryJobs({})
 ```
 
-To run the query execute 'Wix Data: Write Query' command, this will open the query editor. Execute by clicking the triangle icon.
+To run the query, execute 'Wix Data: Write Query' command. This opens the query editor. Execute the query by clicking the triangle icon.
 
 ![Run Query](/docs/run-query.png)
