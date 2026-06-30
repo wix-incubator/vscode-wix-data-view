@@ -40,7 +40,7 @@ const GITIGNORE = '*\n';
 export function isAutocompleteEnabled(): boolean {
   return vscode.workspace
     .getConfiguration('vscode-wix-data-view.queryEditor')
-    .get<boolean>('enableAutocomplete', true);
+    .get<boolean>('enableAutocomplete', false);
 }
 
 /**

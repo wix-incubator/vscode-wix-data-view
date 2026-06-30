@@ -76,6 +76,12 @@ export class ConfigurationPanel {
         const apiKey = auth.type === 'APIKey' ? auth.apiKey : '';
         const siteId = this.wixCredentialManager.getSiteId();
         const credentialStatus = this.getCredentialStatus();
+        const nonce = this.getNonce();
+        const csp = [
+            `default-src 'none'`,
+            `style-src ${this.panel.webview.cspSource}`,
+            `script-src 'nonce-${nonce}'`,
+        ].join('; ');
 
         return `
             <!DOCTYPE html>
@@ -83,6 +89,7 @@ export class ConfigurationPanel {
             <head>
                 <meta charset="UTF-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                <meta http-equiv="Content-Security-Policy" content="${csp}"/>
                 <link href="${styleUri}" rel="stylesheet"/>
                 <title>Wix Data Configuration</title>
             </head>
@@ -106,7 +113,7 @@ export class ConfigurationPanel {
                 <form>
                     <div>
                         <label for="apiKey">API Key</label>
-                        <input type="text" id="apiKey" name="apiKey" value="${this.escapeAttribute(apiKey)}"/>
+                        <input type="password" id="apiKey" name="apiKey" value="${this.escapeAttribute(apiKey)}"/>
                     </div>
                     <div>
                         <label for="siteId">Site ID</label>
@@ -117,7 +124,7 @@ export class ConfigurationPanel {
                     </div>
                 </form>
 
-                <script src="${scriptUri}"></script>
+                <script nonce="${nonce}" src="${scriptUri}"></script>
             </body>
             </html>
         `;
@@ -139,6 +146,15 @@ export class ConfigurationPanel {
                 <span>Saved manual credentials will be used.</span>
             </div>
         `;
+    }
+
+    private getNonce(): string {
+        let nonce = '';
+        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for (let i = 0; i < 32; i++) {
+            nonce += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return nonce;
     }
 
     private escapeAttribute(value: string): string {
