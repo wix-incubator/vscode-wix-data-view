@@ -11,10 +11,10 @@
 - Add support for adding and removing collection fields
 - Expose new Wix Data APIs: Backups, Data Movement Jobs
 
-## [0.0.7]
-- Experimental auto-complete mode is now off by default
-
 ## [0.0.6]
 - Add experimental auto-complete mode
 - Add action to view collection in Wix dashboard
 - Show indication of which credential source is being used
+
+## [0.0.7]
+- Experimental auto-complete mode is now off by default
