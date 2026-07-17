@@ -102,12 +102,12 @@ const s = suite('Wix Data Viewer', async () => {
 		assert.equal(field1Item.collapsibleState, vscode.TreeItemCollapsibleState.None);
 
 		// Test copying IDs
-		dataCollectionTree.copyId(collection1);
-		
+		dataCollectionTree.copyCollectionId(collection1);
+
 		const c1clipboard = await vscode.env.clipboard.readText();
 		assert.equal(c1clipboard, 'c1');
 
-		dataCollectionTree.copyId(field1);
+		dataCollectionTree.copyFieldId(field1);
 
 		const f1clipboard = await vscode.env.clipboard.readText();
 		assert.equal(f1clipboard, 'field1');

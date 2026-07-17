@@ -23,6 +23,10 @@ export class DataCollectionNode {
     ) {}
 }
 
+function isNativeCollection(collection?: collections.DataCollection): boolean {
+    return collection?.collectionType === collections.CollectionType.NATIVE;
+}
+
 function determineCollectionNamespace(collection: collections.DataCollection): string {
     return collection.displayNamespace 
         ?? (collection._id?.includes('/') ? collection._id?.split('/')[0] : undefined)
@@ -112,12 +116,12 @@ export class DataCollectionTree implements vscode.TreeDataProvider<DataCollectio
         switch (element.type) {
             case NodeType.COLLECTION:
                 treeItem.iconPath = iconPath('collections.svg');
-                treeItem.contextValue = 'collection';
+                treeItem.contextValue = isNativeCollection(element.collection) ? 'collection-native' : 'collection';
                 treeItem.tooltip = element.collection?._id;
                 break;
             case NodeType.FIELD:
                 treeItem.iconPath = this.determineFieldIcon(element.field);
-                treeItem.contextValue = 'field';
+                treeItem.contextValue = isNativeCollection(element.collection) ? 'field-native' : 'field';
                 treeItem.tooltip = element.field?.key;
                 break;
             case NodeType.NAMESPACE:
@@ -200,8 +204,12 @@ export class DataCollectionTree implements vscode.TreeDataProvider<DataCollectio
         return iconPath("ic-type-unsupported.svg");
     }
 
-    copyId(node: DataCollectionNode): void {
-        vscode.env.clipboard.writeText(node.field?.key ?? node.collection?._id ?? '');
+    copyCollectionId(node: DataCollectionNode): void {
+        vscode.env.clipboard.writeText(node.collection?._id ?? '');
+    }
+
+    copyFieldId(node: DataCollectionNode): void {
+        vscode.env.clipboard.writeText(node.field?.key ?? '');
     }
 }
 

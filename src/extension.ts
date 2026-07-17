@@ -106,8 +106,14 @@ export async function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('vscode-wix-data-view.copy-id', async (node: DataCollectionNode) => {
-			dataCollectionTree.copyId(node);
+		vscode.commands.registerCommand('vscode-wix-data-view.copy-collection-id', async (node: DataCollectionNode) => {
+			dataCollectionTree.copyCollectionId(node);
+		})
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('vscode-wix-data-view.copy-field-id', async (node: DataCollectionNode) => {
+			dataCollectionTree.copyFieldId(node);
 		})
 	);
 
