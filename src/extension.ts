@@ -8,22 +8,47 @@ import { WixCredentialManager } from './auth/credentialManager';
 import { runQuery, showCreateCollectionEditor, showAddFieldEditor, showUpdateFieldEditor, showDeleteFieldEditor, showQueryEditor } from './queryEditor';
 import { cleanupQueryFiles, ensureQueryWorkspace, isAutocompleteEnabled } from './runner/queryWorkspace';
 
+function reportError(outputChannel: vscode.OutputChannel, action: string, e: any): void {
+	const message = e?.message ?? String(e);
+	outputChannel.appendLine(`Error: ${action} failed. ${message}`);
+	vscode.window.showErrorMessage(`Failed to ${action}. ${message}`);
+}
+
+/** Wraps a command callback so an unexpected throw surfaces to the user instead of failing silently. */
+function guarded<T extends (...args: any[]) => Promise<void> | void>(outputChannel: vscode.OutputChannel, action: string, fn: T): T {
+	return (async (...args: any[]) => {
+		try {
+			await fn(...args);
+		} catch (e) {
+			reportError(outputChannel, action, e);
+		}
+	}) as T;
+}
+
 export async function activate(context: vscode.ExtensionContext) {
 	const outputChannel = vscode.window.createOutputChannel('Wix Data View');
+	context.subscriptions.push(outputChannel);
 
-	if (isAutocompleteEnabled()) {
-		await ensureQueryWorkspace(context);
+	try {
+		if (isAutocompleteEnabled()) {
+			await ensureQueryWorkspace(context);
+		}
+		await cleanupQueryFiles(); // start each session with a clean slate, even if disabled
+	} catch (e) {
+		reportError(outputChannel, 'set up the query workspace', e);
 	}
-	await cleanupQueryFiles(); // start each session with a clean slate, even if disabled
 
 	const credentialManager = new WixCredentialManager(context);
 	const collectionProvider = new DefaultWixDataCollectionProvider(credentialManager, outputChannel);
 	const dataCollectionTree = new DataCollectionTree(collectionProvider);
+	context.subscriptions.push(dataCollectionTree);
 
-	vscode.window.createTreeView('vscode-wix-data-view.collection-tree', { 
-		treeDataProvider: dataCollectionTree,
-		showCollapseAll: true,
-	});
+	context.subscriptions.push(
+		vscode.window.createTreeView('vscode-wix-data-view.collection-tree', {
+			treeDataProvider: dataCollectionTree,
+			showCollapseAll: true,
+		})
+	);
 
 	dataCollectionTree.refresh();
 
@@ -57,52 +82,51 @@ export async function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('vscode-wix-data-view.configure-credentials', async () => {
+		vscode.commands.registerCommand('vscode-wix-data-view.configure-credentials', guarded(outputChannel, 'open credentials configuration', async () => {
 			ConfigurationPanel.show(context.extensionUri, credentialManager);
-		})
+		}))
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('vscode-wix-data-view.open-collection', async (node: DataCollectionNode) => {
-			//CollectionViewPanel.show(node.collection!, context.extensionUri, credentialManager);
+		vscode.commands.registerCommand('vscode-wix-data-view.open-collection', guarded(outputChannel, 'open collection', async (node: DataCollectionNode) => {
 			await showQueryEditor(context, node.collection?._id);
-		})
+		}))
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('vscode-wix-data-view.new-query', async () => {
+		vscode.commands.registerCommand('vscode-wix-data-view.new-query', guarded(outputChannel, 'open a new query', async () => {
 			await showQueryEditor(context);
-		})
+		}))
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('vscode-wix-data-view.create-collection', async () => {
+		vscode.commands.registerCommand('vscode-wix-data-view.create-collection', guarded(outputChannel, 'open the create-collection editor', async () => {
 			await showCreateCollectionEditor(context);
-		})
+		}))
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('vscode-wix-data-view.add-field', async (node?: DataCollectionNode) => {
+		vscode.commands.registerCommand('vscode-wix-data-view.add-field', guarded(outputChannel, 'open the add-field editor', async (node?: DataCollectionNode) => {
 			await showAddFieldEditor(context, node?.collection?._id);
-		})
+		}))
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('vscode-wix-data-view.update-field', async (node?: DataCollectionNode) => {
+		vscode.commands.registerCommand('vscode-wix-data-view.update-field', guarded(outputChannel, 'open the update-field editor', async (node?: DataCollectionNode) => {
 			await showUpdateFieldEditor(context, node?.collection?._id, node?.field);
-		})
+		}))
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('vscode-wix-data-view.delete-field', async (node?: DataCollectionNode) => {
+		vscode.commands.registerCommand('vscode-wix-data-view.delete-field', guarded(outputChannel, 'open the delete-field editor', async (node?: DataCollectionNode) => {
 			await showDeleteFieldEditor(context, node?.collection?._id, node?.field?.key);
-		})
+		}))
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('vscode-wix-data-view.run-query', async () => {
+		vscode.commands.registerCommand('vscode-wix-data-view.run-query', guarded(outputChannel, 'run the query', async () => {
 			await runQuery(context, credentialManager, outputChannel);
-		})
+		}))
 	);
 
 	context.subscriptions.push(

@@ -18,3 +18,7 @@
 
 ## [0.0.7]
 - Experimental auto-complete mode is now off by default
+
+## [0.0.8]
+- Update action menus: show "More Actions" button, don't show actions for app collections
+- Improve error handling

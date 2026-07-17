@@ -211,6 +211,10 @@ export class DataCollectionTree implements vscode.TreeDataProvider<DataCollectio
     copyFieldId(node: DataCollectionNode): void {
         vscode.env.clipboard.writeText(node.field?.key ?? '');
     }
+
+    dispose(): void {
+        this._onDidChangeTreeData.dispose();
+    }
 }
 
 const iconPath = (fileName: string) => ({
