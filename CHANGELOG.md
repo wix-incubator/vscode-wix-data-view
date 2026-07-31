@@ -22,3 +22,6 @@
 ## [0.0.8]
 - Update action menus: show "More Actions" button, don't show actions for app collections
 - Improve error handling
+
+## [0.0.9]
+- Don't show update/delete actions for system fields

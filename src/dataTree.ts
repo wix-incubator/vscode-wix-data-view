@@ -121,7 +121,9 @@ export class DataCollectionTree implements vscode.TreeDataProvider<DataCollectio
                 break;
             case NodeType.FIELD:
                 treeItem.iconPath = this.determineFieldIcon(element.field);
-                treeItem.contextValue = isNativeCollection(element.collection) ? 'field-native' : 'field';
+                treeItem.contextValue = isNativeCollection(element.collection)
+                    ? (element.field?.systemField ? 'field-native-system' : 'field-native')
+                    : 'field';
                 treeItem.tooltip = element.field?.key;
                 break;
             case NodeType.NAMESPACE:

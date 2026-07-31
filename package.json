@@ -2,7 +2,7 @@
   "name": "vscode-wix-data-view",
   "displayName": "Wix Data View",
   "description": "Wix Data (CMS) client integrated into VSCode.",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "publisher": "wix",
   "icon": "assets/db_grey_256.png",
   "engines": {
@@ -161,7 +161,7 @@
         },
         {
           "command": "vscode-wix-data-view.copy-field-id",
-          "when": "view == vscode-wix-data-view.collection-tree && viewItem == field",
+          "when": "view == vscode-wix-data-view.collection-tree && (viewItem == field || viewItem == field-native-system)",
           "group": "inline"
         },
         {
