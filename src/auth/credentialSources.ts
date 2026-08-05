@@ -3,6 +3,7 @@ import os from 'os';
 import path from 'path';
 
 import * as vscode from 'vscode';
+import { formatCredentialLoadError, parseWixConfig } from './credentialErrors';
 
 const WIX_CLI_API_KEY_PATH = '.wix/auth/api-key.json';
 
@@ -23,7 +24,7 @@ export class APIKeyAuthSource {
     }
 
     private load(): void {
-        this.context.secrets.get('wixApiKey')
+        Promise.resolve(this.context.secrets.get('wixApiKey'))
             .then((apiKey) => {
                 if (apiKey) {
                     this.apiKey = apiKey;
@@ -32,6 +33,12 @@ export class APIKeyAuthSource {
                     this.apiKey = this.loadFromCliConfig();
                 }
                 this.ready = true;
+            })
+            .catch((error) => {
+                this.apiKey = '';
+                this.apiKeySource = undefined;
+                this.ready = true;
+                vscode.window.showErrorMessage(formatCredentialLoadError(error));
             });
     }
 
@@ -53,7 +60,12 @@ export class APIKeyAuthSource {
     }
 
     public updateApiKey(apiKey: string): void {
-        this.context.secrets.store('wixApiKey', apiKey);
+        const persistence = apiKey
+            ? this.context.secrets.store('wixApiKey', apiKey)
+            : this.context.secrets.delete('wixApiKey');
+        Promise.resolve(persistence).catch((error) => {
+            vscode.window.showErrorMessage(formatCredentialLoadError(error));
+        });
         this.apiKey = apiKey;
         this.apiKeySource = apiKey ? ApiKeyAuthSourceType.SecretStore : undefined;
         this.ready = true;
@@ -116,11 +128,18 @@ export class WorkspaceWixConfigSiteIdSource {
     public load(): void {
         if (vscode.workspace.workspaceFolders) {
             for (let workspaceFolder of vscode.workspace.workspaceFolders) {
-                const configFile = workspaceFolder.uri.fsPath + '/wix.config.json';
-                if (fs.existsSync(configFile)) {
-                    const config = JSON.parse(fs.readFileSync(configFile, 'utf8'));
-                    this.siteId = config.siteId;
+                const configFile = path.join(workspaceFolder.uri.fsPath, 'wix.config.json');
+                try {
+                    if (fs.existsSync(configFile)) {
+                        const config = parseWixConfig(fs.readFileSync(configFile, 'utf8'), configFile);
+                        this.siteId = config.siteId;
+                        this.ready = true;
+                        return;
+                    }
+                } catch (error) {
+                    this.siteId = undefined;
                     this.ready = true;
+                    vscode.window.showErrorMessage(error instanceof Error ? error.message : String(error));
                     return;
                 }
             }
