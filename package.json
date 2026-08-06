@@ -2,7 +2,7 @@
   "name": "vscode-wix-data-view",
   "displayName": "Wix Data View",
   "description": "Wix Data (CMS) client integrated into VSCode.",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "publisher": "wix",
   "icon": "assets/db_grey_256.png",
   "engines": {
@@ -274,7 +274,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@wix/data": "^1.0.121",
+    "@wix/data": "1.0.503",
     "@wix/sdk": "^1.12.8",
     "@wix/wix-data-items-sdk": "^1.0.170",
     "lodash": "^4.17.21"

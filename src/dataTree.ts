@@ -157,7 +157,10 @@ export class DataCollectionTree implements vscode.TreeDataProvider<DataCollectio
 
         switch(element.type) {
             case collections.Type.TEXT:
+            case collections.Type.EMAIL:
                 return iconPath("ic-type-text.svg");
+            case collections.Type.LANGUAGE:
+                return iconPath("ic-type-language.svg");
             case collections.Type.NUMBER:
                 return iconPath("ic-type-number.svg");
             case collections.Type.BOOLEAN:
@@ -166,20 +169,20 @@ export class DataCollectionTree implements vscode.TreeDataProvider<DataCollectio
             case collections.Type.DATETIME:            
                 return iconPath("ic-type-calendar.svg");
             case collections.Type.TIME:
-            case collections.Type.LEGACY_TIME:
                 return iconPath("ic-type-time.svg");
             case collections.Type.IMAGE:
-            case collections.Type.LEGACY_IMAGE:
+            case collections.Type.MEDIA_IMAGE:
+            case collections.Type.MEDIA_VECTOR_ART:
                 return iconPath("ic-type-image.svg");
             case collections.Type.DOCUMENT:
                 return iconPath("ic-type-document.svg");
             case collections.Type.RICH_TEXT:
-                return iconPath("ic-type-rich-text.svg");
+                return iconPath("ic-type-richtext.svg");
             case collections.Type.RICH_CONTENT:
                 return iconPath("ic-type-rich-content.svg");
             case collections.Type.URL:
             case collections.Type.PAGE_LINK:
-            case collections.Type.LEGACY_EXTERNAL_URL:
+            case collections.Type.SLUG:
                 return iconPath("ic-type-url.svg");
             case collections.Type.ARRAY_DOCUMENT:
                 return iconPath("ic-type-document-array.svg");
@@ -195,13 +198,16 @@ export class DataCollectionTree implements vscode.TreeDataProvider<DataCollectio
                 return iconPath("ic-type-object.svg");
             case collections.Type.AUDIO:
                 return iconPath("ic-type-audio.svg");
-            case collections.Type.LEGACY_EXTERNAL_VIDEO:
             case collections.Type.VIDEO:
                 return iconPath("ic-type-video.svg");
             case collections.Type.LEGACY_COLOR:
                 return iconPath("ic-type-color.svg");
             case collections.Type.MEDIA_GALLERY:
                 return iconPath("ic-type-media-gallery.svg");
+            case collections.Type.ADDRESS:
+                return iconPath("ic-type-address.svg");
+            case collections.Type.ANY:
+                return iconPath("ic-type-custom.svg");
         }
         return iconPath("ic-type-unsupported.svg");
     }

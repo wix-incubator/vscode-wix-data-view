@@ -113,6 +113,54 @@ const s = suite('Wix Data Viewer', async () => {
 		assert.equal(f1clipboard, 'field1');
 	});
 
+	test('Should assign an icon to every Wix Data field type', () => {
+		const dataCollectionTree = new DataCollectionTree({ getCollections: async () => [] });
+		const expectedIcons: Record<string, string> = {
+			TEXT: 'ic-type-text.svg',
+			NUMBER: 'ic-type-number.svg',
+			DATE: 'ic-type-calendar.svg',
+			DATETIME: 'ic-type-calendar.svg',
+			IMAGE: 'ic-type-image.svg',
+			BOOLEAN: 'ic-type-boolean.svg',
+			DOCUMENT: 'ic-type-document.svg',
+			URL: 'ic-type-url.svg',
+			RICH_TEXT: 'ic-type-richtext.svg',
+			VIDEO: 'ic-type-video.svg',
+			ANY: 'ic-type-custom.svg',
+			ARRAY_STRING: 'ic-type-tags.svg',
+			ARRAY_DOCUMENT: 'ic-type-document-array.svg',
+			AUDIO: 'ic-type-audio.svg',
+			TIME: 'ic-type-time.svg',
+			LANGUAGE: 'ic-type-language.svg',
+			EMAIL: 'ic-type-text.svg',
+			RICH_CONTENT: 'ic-type-rich-content.svg',
+			MEDIA_GALLERY: 'ic-type-media-gallery.svg',
+			ADDRESS: 'ic-type-address.svg',
+			PAGE_LINK: 'ic-type-url.svg',
+			SLUG: 'ic-type-url.svg',
+			REFERENCE: 'ic-type-reference.svg',
+			MULTI_REFERENCE: 'ic-type-reference-multi.svg',
+			OBJECT: 'ic-type-object.svg',
+			ARRAY: 'ic-type-array.svg',
+			LEGACY_TIME: 'ic-type-time.svg',
+			LEGACY_BOOK: 'ic-type-document.svg',
+			LEGACY_EXTERNAL_URL: 'ic-type-url.svg',
+			LEGACY_BROKEN_REFERENCE: 'ic-type-reference.svg',
+			LEGACY_IMAGE: 'ic-type-image.svg',
+			SECURED_MEDIA: 'ic-type-image.svg',
+			MEDIA_IMAGE: 'ic-type-image.svg',
+			MEDIA_VECTOR_ART: 'ic-type-media-vector-art.svg',
+			LEGACY_COLOR: 'ic-type-color.svg',
+			LEGACY_EXTERNAL_VIDEO: 'ic-type-video.svg',
+		};
+
+		for (const [type, icon] of Object.entries(expectedIcons)) {
+			const fieldIcon = dataCollectionTree.determineFieldIcon({ type: type as collections.Type });
+			assert.equal(fieldIcon.light.endsWith(`/light/${icon}`), true, `${type} should use ${icon}`);
+			assert.equal(fieldIcon.dark.endsWith(`/dark/${icon}`), true, `${type} should use ${icon}`);
+		}
+	});
+
 	test('Should open add field editor for selected collection', async () => {
 		const node = {
 			collection: {
