@@ -4,6 +4,7 @@ import { collections } from '@wix/data';
 import { pick } from 'lodash';
 import { WixCredentialManager } from './auth/credentialManager';
 import { ensureQueryWorkspace, isAutocompleteEnabled } from './runner/queryWorkspace';
+import { queryOperationFromPath, type AnalyticsReporter } from './analytics';
 
 function randomSuffix(): string {
     return Math.random().toString(36).substring(2);
@@ -142,7 +143,12 @@ export async function showResult(context: vscode.ExtensionContext, result: strin
     });
 }
 
-export async function runQuery(context: vscode.ExtensionContext, credentialManager: WixCredentialManager, outputChannel: vscode.OutputChannel) {
+export async function runQuery(
+    context: vscode.ExtensionContext,
+    credentialManager: WixCredentialManager,
+    outputChannel: vscode.OutputChannel,
+    reportAnalytics: AnalyticsReporter
+) {
     const editor = vscode.window.activeTextEditor;
 
     if (!editor) {
@@ -151,6 +157,12 @@ export async function runQuery(context: vscode.ExtensionContext, credentialManag
     }
 
     const query = editor.document.getText();
+
+    const queryInfo = {
+        operation: queryOperationFromPath(editor.document.uri.path),
+        queryLength: query.length,
+    };
+    reportAnalytics('query_run', queryInfo);
 
     const queryRunnerWorker = new worker.Worker(
         new URL(context.extensionUri + '/dist/queryRunnerWorker.js'),
@@ -164,6 +176,7 @@ export async function runQuery(context: vscode.ExtensionContext, credentialManag
 
     queryRunnerWorker.on('message', (result) => {
         if (result.result) {
+            reportAnalytics('query_finished', { ...queryInfo, status: 'success' });
             showResult(context, result.result);
             queryRunnerWorker.terminate();
         } else if (result.log) {
@@ -171,6 +184,7 @@ export async function runQuery(context: vscode.ExtensionContext, credentialManag
         } else if (result.warn) {
             outputChannel.appendLine('Warning: ' + result.warn);
         } else if (result.error) {
+            reportAnalytics('query_finished', { ...queryInfo, status: 'failure', failureReason: String(result.error) });
             outputChannel.appendLine('Error: ' + result.error);
             vscode.window.showErrorMessage('Error: ' + result.error);
         }

@@ -156,7 +156,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('vscode-wix-data-view.run-query', guarded(outputChannel, 'run the query', async () => {
-			await runQuery(context, credentialManager, outputChannel);
+			await runQuery(context, credentialManager, outputChannel, reportAnalytics);
 		}))
 	);
 
