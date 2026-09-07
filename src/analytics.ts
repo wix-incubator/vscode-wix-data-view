@@ -6,38 +6,18 @@ export type AnalyticsReporter = (event: string, data?: AnalyticsData) => void;
 /**
  * Reports an analytics event through the Wix IDE Platform bridge. The bridge
  * derives the `extension` field from `context.extension`; the host (Studio 2)
- * maps `{ extension, event, data }` to its own BI events. Whether the bridge
- * command is registered is looked up via `vscode.commands.getCommands()` on
- * each report until it is found — outside the Wix IDE it stays absent, which
- * is a normal situation, so events are silently skipped there and this
- * extension keeps working in plain VS Code; inside the Wix IDE the bridge may
- * activate after this extension, so the lookup is repeated until it appears,
- * then remembered for the rest of the session. A failure of an existing
- * bridge command is still warned to the console.
+ * maps `{ extension, event, data }` to its own BI events. Outside the Wix IDE
+ * the bridge command does not exist and the call rejects; that is a normal
+ * situation, so rejections are swallowed and nothing is logged — the bridge
+ * itself logs rejected payloads in its output channel.
  */
 export function createAnalyticsReporter(context: vscode.ExtensionContext): AnalyticsReporter {
-    // Outside the Wix IDE the bridge extension is not installed, which is a
-    // normal situation: analytics are simply not reported. Inside the Wix IDE
-    // the bridge may activate after this extension, so an absent command is
-    // looked up again on the next report; a found command is remembered.
-    let bridgeAvailable = false;
-    const isBridgeAvailable = (): Promise<boolean> => {
-        if (bridgeAvailable) return Promise.resolve(true);
-        return Promise.resolve(vscode.commands.getCommands(true)).then(
-            (commands) => (bridgeAvailable = commands.includes('wixIdePlatform.reportAnalyticsEvent')),
-            () => false
-        );
-    };
-
     return (event, data) => {
-        isBridgeAvailable()
-            .then((available) => {
-                if (!available) return;
-                return vscode.commands.executeCommand('wixIdePlatform.reportAnalyticsEvent', context.extension, event, data);
-            })
-            .catch((error: unknown) => {
-                console.warn(`[vscode-wix-data-view] analytics event "${event}" not reported:`, error);
-            });
+        Promise.resolve(
+            vscode.commands.executeCommand('wixIdePlatform.reportAnalyticsEvent', context.extension, event, data)
+        ).catch(() => {
+            // Not running inside the Wix IDE, or the bridge rejected the event.
+        });
     };
 }
 

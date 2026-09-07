@@ -3,11 +3,7 @@ import Module from 'module';
 
 type ExecuteCommand = (command: string, ...args: unknown[]) => Promise<unknown>;
 
-function loadAnalyticsWithVscodeStub(
-    executeCommand: ExecuteCommand,
-    commands: string[] = ['wixIdePlatform.reportAnalyticsEvent'],
-    onGetCommands?: () => void
-) {
+function loadAnalyticsWithVscodeStub(executeCommand: ExecuteCommand) {
     const modulePrototype = Module.prototype as any;
     const originalRequire = modulePrototype.require;
     modulePrototype.require = function (request: string) {
@@ -15,10 +11,6 @@ function loadAnalyticsWithVscodeStub(
             return {
                 commands: {
                     executeCommand,
-                    getCommands: async () => {
-                        onGetCommands?.();
-                        return commands;
-                    },
                 },
             };
         }
@@ -45,7 +37,6 @@ describe('createAnalyticsReporter', () => {
 
         createAnalyticsReporter(context)('collection_click', { collectionName: 'Blog', collectionId: 'blog' });
         await new Promise<void>((resolve) => setImmediate(resolve));
-        await new Promise<void>((resolve) => setImmediate(resolve));
 
         assert.deepEqual(calls, [[
             'wixIdePlatform.reportAnalyticsEvent',
@@ -63,104 +54,45 @@ describe('createAnalyticsReporter', () => {
 
         createAnalyticsReporter(context)('panel_opened');
         await new Promise<void>((resolve) => setImmediate(resolve));
-        await new Promise<void>((resolve) => setImmediate(resolve));
 
         assert.deepEqual(calls[0].slice(2), ['panel_opened', undefined]);
     });
 
-    it('does nothing when the bridge command is not registered', async () => {
-        const calls: unknown[][] = [];
-        const warnings: unknown[][] = [];
+    it('swallows a rejected command without logging', async () => {
         const originalWarn = console.warn;
+        const originalError = console.error;
+        const warnings: unknown[][] = [];
+        const errors: unknown[][] = [];
         console.warn = (...args: unknown[]) => {
             warnings.push(args);
         };
-        try {
-            const { createAnalyticsReporter } = loadAnalyticsWithVscodeStub(async (...args) => {
-                calls.push(args);
-            }, []);
-
-            createAnalyticsReporter(context)('refresh');
-            await new Promise<void>((resolve) => setImmediate(resolve));
-            await new Promise<void>((resolve) => setImmediate(resolve));
-
-            assert.equal(calls.length, 0);
-            assert.equal(warnings.length, 0);
-        } finally {
-            console.warn = originalWarn;
-        }
-    });
-
-    it('warns when the bridge command exists but fails', async () => {
-        const warnings: unknown[][] = [];
-        const originalWarn = console.warn;
-        console.warn = (...args: unknown[]) => {
-            warnings.push(args);
+        console.error = (...args: unknown[]) => {
+            errors.push(args);
         };
+
+        let unhandledRejectionFired = false;
+        const onUnhandledRejection = () => {
+            unhandledRejectionFired = true;
+        };
+        process.on('unhandledRejection', onUnhandledRejection);
+
         try {
             const { createAnalyticsReporter } = loadAnalyticsWithVscodeStub(async () => {
-                throw new Error('boom');
+                throw new Error("command 'wixIdePlatform.reportAnalyticsEvent' not found");
             });
 
-            assert.doesNotThrow(() => createAnalyticsReporter(context)('refresh'));
-            await new Promise<void>((resolve) => setImmediate(resolve));
+            const report = createAnalyticsReporter(context);
+            assert.doesNotThrow(() => report('refresh'));
             await new Promise<void>((resolve) => setImmediate(resolve));
 
-            assert.equal(warnings.length, 1);
-            assert.equal(warnings[0][0], '[vscode-wix-data-view] analytics event "refresh" not reported:');
+            assert.equal(warnings.length, 0);
+            assert.equal(errors.length, 0);
+            assert.equal(unhandledRejectionFired, false);
         } finally {
+            process.removeListener('unhandledRejection', onUnhandledRejection);
             console.warn = originalWarn;
+            console.error = originalError;
         }
-    });
-
-    it('starts reporting once the bridge command appears', async () => {
-        const calls: unknown[][] = [];
-        const commands: string[] = [];
-        const { createAnalyticsReporter } = loadAnalyticsWithVscodeStub(async (...args) => {
-            calls.push(args);
-        }, commands);
-
-        const report = createAnalyticsReporter(context);
-
-        report('refresh');
-        await new Promise<void>((resolve) => setImmediate(resolve));
-        await new Promise<void>((resolve) => setImmediate(resolve));
-        assert.equal(calls.length, 0);
-
-        commands.push('wixIdePlatform.reportAnalyticsEvent');
-        report('refresh');
-        await new Promise<void>((resolve) => setImmediate(resolve));
-        await new Promise<void>((resolve) => setImmediate(resolve));
-
-        assert.equal(calls.length, 1);
-        assert.equal(calls[0][2], 'refresh');
-    });
-
-    it('looks the command up only once after it is found', async () => {
-        const calls: unknown[][] = [];
-        let getCommandsCalls = 0;
-        const { createAnalyticsReporter } = loadAnalyticsWithVscodeStub(
-            async (...args) => {
-                calls.push(args);
-            },
-            ['wixIdePlatform.reportAnalyticsEvent'],
-            () => {
-                getCommandsCalls += 1;
-            }
-        );
-
-        const report = createAnalyticsReporter(context);
-
-        report('refresh');
-        await new Promise<void>((resolve) => setImmediate(resolve));
-        await new Promise<void>((resolve) => setImmediate(resolve));
-
-        report('refresh');
-        await new Promise<void>((resolve) => setImmediate(resolve));
-        await new Promise<void>((resolve) => setImmediate(resolve));
-
-        assert.equal(calls.length, 2);
-        assert.equal(getCommandsCalls, 1);
     });
 });
 
