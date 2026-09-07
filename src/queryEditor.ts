@@ -176,15 +176,21 @@ export async function runQuery(
 
     queryRunnerWorker.on('message', (result) => {
         if (result.result) {
-            reportAnalytics('query_finished', { ...queryInfo, status: 'success' });
+            reportAnalytics('query_finished', result.error
+                ? { ...queryInfo, status: 'failure', failureReason: String(result.error) }
+                : { ...queryInfo, status: 'success' });
             showResult(context, result.result);
+            if (result.error) {
+                outputChannel.appendLine('Error: ' + result.error);
+                vscode.window.showErrorMessage('Error: ' + result.error);
+            }
             queryRunnerWorker.terminate();
         } else if (result.log) {
             outputChannel.appendLine('Log: ' + result.log);
         } else if (result.warn) {
             outputChannel.appendLine('Warning: ' + result.warn);
         } else if (result.error) {
-            reportAnalytics('query_finished', { ...queryInfo, status: 'failure', failureReason: String(result.error) });
+            // console.error from the user's script: a log line, not the end of the run.
             outputChannel.appendLine('Error: ' + result.error);
             vscode.window.showErrorMessage('Error: ' + result.error);
         }
