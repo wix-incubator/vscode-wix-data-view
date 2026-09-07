@@ -3,12 +3,24 @@ import Module from 'module';
 
 type ExecuteCommand = (command: string, ...args: unknown[]) => Promise<unknown>;
 
-function loadAnalyticsWithVscodeStub(executeCommand: ExecuteCommand, commands: string[] = ['wixIdePlatform.reportAnalyticsEvent']) {
+function loadAnalyticsWithVscodeStub(
+    executeCommand: ExecuteCommand,
+    commands: string[] = ['wixIdePlatform.reportAnalyticsEvent'],
+    onGetCommands?: () => void
+) {
     const modulePrototype = Module.prototype as any;
     const originalRequire = modulePrototype.require;
     modulePrototype.require = function (request: string) {
         if (request === 'vscode') {
-            return { commands: { executeCommand, getCommands: async () => commands } };
+            return {
+                commands: {
+                    executeCommand,
+                    getCommands: async () => {
+                        onGetCommands?.();
+                        return commands;
+                    },
+                },
+            };
         }
         return originalRequire.call(this, request);
     };
@@ -99,6 +111,56 @@ describe('createAnalyticsReporter', () => {
         } finally {
             console.warn = originalWarn;
         }
+    });
+
+    it('starts reporting once the bridge command appears', async () => {
+        const calls: unknown[][] = [];
+        const commands: string[] = [];
+        const { createAnalyticsReporter } = loadAnalyticsWithVscodeStub(async (...args) => {
+            calls.push(args);
+        }, commands);
+
+        const report = createAnalyticsReporter(context);
+
+        report('refresh');
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        assert.equal(calls.length, 0);
+
+        commands.push('wixIdePlatform.reportAnalyticsEvent');
+        report('refresh');
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        await new Promise<void>((resolve) => setImmediate(resolve));
+
+        assert.equal(calls.length, 1);
+        assert.equal(calls[0][2], 'refresh');
+    });
+
+    it('looks the command up only once after it is found', async () => {
+        const calls: unknown[][] = [];
+        let getCommandsCalls = 0;
+        const { createAnalyticsReporter } = loadAnalyticsWithVscodeStub(
+            async (...args) => {
+                calls.push(args);
+            },
+            ['wixIdePlatform.reportAnalyticsEvent'],
+            () => {
+                getCommandsCalls += 1;
+            }
+        );
+
+        const report = createAnalyticsReporter(context);
+
+        report('refresh');
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        await new Promise<void>((resolve) => setImmediate(resolve));
+
+        report('refresh');
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        await new Promise<void>((resolve) => setImmediate(resolve));
+
+        assert.equal(calls.length, 2);
+        assert.equal(getCommandsCalls, 1);
     });
 });
 

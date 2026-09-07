@@ -49,7 +49,7 @@ All with `extension: 'vscode-wix-data-view'`. `collectionName` is the collection
 
 ## Decisions
 
-- **Reporter** `src/analytics.ts`: `createAnalyticsReporter(context)` → `(event, data?) => void`. It looks up whether the bridge command is registered once per session, via `vscode.commands.getCommands()`, then on each call skips reporting silently if it is absent, or calls `vscode.commands.executeCommand('wixIdePlatform.reportAnalyticsEvent', context.extension, event, data)` and warns with `console.warn` if that call rejects. No dependency on any Wix IDE package; the command id is a string literal. Same shape as the CLI extension's reporter in `wix-ide-platform`.
+- **Reporter** `src/analytics.ts`: `createAnalyticsReporter(context)` → `(event, data?) => void`. It looks up whether the bridge command is registered via `vscode.commands.getCommands()` on each report until it is found (the bridge may activate after this extension), then remembers it; while absent it skips reporting silently, or calls `vscode.commands.executeCommand('wixIdePlatform.reportAnalyticsEvent', context.extension, event, data)` and warns with `console.warn` if that call rejects. No dependency on any Wix IDE package; the command id is a string literal. Same shape as the CLI extension's reporter in `wix-ide-platform`.
 - **Report at the command handler**, before the action runs, so cancelled or failing actions still count as intent (matches the plan's "records the intent" wording).
 - **Tree events via `TreeView`**, not the provider: `createTreeView` returns the view; the extension keeps it to subscribe to `onDidChangeVisibility` and `onDidExpandElement`.
 - **No new commands or manifest changes** (see `open_collection` above). Keeps the marketplace package identical for non-Wix users.
@@ -71,9 +71,9 @@ The reporter never throws or rejects into extension code. Outside the Wix IDE th
 
 Unit tests use the repo's mocha + `assert` setup with the existing `Module.prototype.require` stub for `vscode` (see `test/unit/credentialSources.spec.ts`).
 
-- `test/unit/analytics.spec.ts`: reporter passes `(command id, context.extension, event, data)` to `executeCommand`; undefined `data` passed through; rejected command is swallowed and warned.
+- `test/unit/analytics.spec.ts`: reporter passes `(command id, context.extension, event, data)` to `executeCommand`; undefined `data` passed through; nothing is called or logged when the bridge command is not registered; a failing registered command is swallowed and warned; reporting starts once the command appears; the lookup stops after it is found.
 - `test/unit/queryOperation.spec.ts`: `queryOperationFromPath` maps each prefix, ignores the random suffix and directories, returns `unknown` otherwise.
-- Manual: in the Wix IDE playground, walk the toolbar, a collection expand, each context-menu item, and a query run; events appear in the playground's Analytics Events panel. In plain VS Code (F5): no errors, console warns "not reported".
+- Manual: in the Wix IDE playground, walk the toolbar, a collection expand, each context-menu item, and a query run; events appear in the playground's Analytics Events panel. In plain VS Code (F5): no errors and no console output from the reporter.
 
 ## Documentation
 
