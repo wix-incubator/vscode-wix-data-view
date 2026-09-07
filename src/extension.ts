@@ -121,6 +121,13 @@ export async function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
+		vscode.commands.registerCommand('vscode-wix-data-view.run-collection-query', guarded(outputChannel, 'open collection query', async (node: DataCollectionNode) => {
+			reportAnalytics('run_query', collectionData(node));
+			await showQueryEditor(context, node.collection?._id);
+		}))
+	);
+
+	context.subscriptions.push(
 		vscode.commands.registerCommand('vscode-wix-data-view.new-query', guarded(outputChannel, 'open a new query', async () => {
 			await showQueryEditor(context);
 		}))

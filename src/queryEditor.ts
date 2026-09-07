@@ -160,6 +160,7 @@ export async function runQuery(
 
     const queryInfo = {
         operation: queryOperationFromPath(editor.document.uri.path),
+        query,
         queryLength: query.length,
     };
     reportAnalytics('query_run', queryInfo);

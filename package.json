@@ -40,6 +40,11 @@
         "icon": "$(search)"
       },
       {
+        "command": "vscode-wix-data-view.run-collection-query",
+        "title": "Run Query",
+        "icon": "$(search)"
+      },
+      {
         "command": "vscode-wix-data-view.configure-credentials",
         "title": "Wix Data: Configure Credentials",
         "icon": "$(gear)"
@@ -140,7 +145,7 @@
       ],
       "view/item/context": [
         {
-          "command": "vscode-wix-data-view.open-collection",
+          "command": "vscode-wix-data-view.run-collection-query",
           "when": "view == vscode-wix-data-view.collection-tree && viewItem =~ /^collection/",
           "group": "inline@1"
         },

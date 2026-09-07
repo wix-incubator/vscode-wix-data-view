@@ -73,14 +73,16 @@ To run the query, execute 'Wix Data: Write Query' command. This opens the query 
 
 ## Analytics events
 
-Inside the Wix IDE the extension reports host-agnostic analytics events through the Wix IDE Platform bridge (`wixIdePlatform.reportAnalyticsEvent`); the host maps them to its own BI. Outside the Wix IDE the command does not exist and nothing is sent. No query text leaves the editor — only its length and the operation it was opened for.
+Inside the Wix IDE the extension reports host-agnostic analytics events through the Wix IDE Platform bridge (`wixIdePlatform.reportAnalyticsEvent`); the host maps them to its own BI. Outside the Wix IDE the command does not exist and nothing is sent. `query_run` and `query_finished` include the query text.
 
 | Event | Data | When |
 |---|---|---|
 | `panel_opened` | — | Collections view becomes visible |
 | `collection_click` | `collectionName`, `collectionId` | a collection row is expanded |
 | `add_collection`, `refresh` | — | toolbar buttons |
-| `open_collection`, `copy_collection_id`, `manage_in_dashboard`, `add_field` | `collectionName`, `collectionId` | collection context menu / inline icon |
+| `open_collection` | `collectionName`, `collectionId` | collection context menu |
+| `run_query` | `collectionName`, `collectionId` | inline Run Query icon on a collection row |
+| `copy_collection_id`, `manage_in_dashboard`, `add_field` | `collectionName`, `collectionId` | collection context menu / inline icon |
 | `copy_field_id`, `update_field`, `delete_field` | + `fieldName` | field context menu |
-| `query_run` | `operation`, `queryLength` | Run Query clicked |
+| `query_run` | `operation`, `query`, `queryLength` | Run Query clicked |
 | `query_finished` | + `status` (`success` \| `failure`), `failureReason` | worker result or error |
