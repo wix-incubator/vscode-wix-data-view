@@ -3,12 +3,12 @@ import Module from 'module';
 
 type ExecuteCommand = (command: string, ...args: unknown[]) => Promise<unknown>;
 
-function loadAnalyticsWithVscodeStub(executeCommand: ExecuteCommand) {
+function loadAnalyticsWithVscodeStub(executeCommand: ExecuteCommand, commands: string[] = ['wixIdePlatform.reportAnalyticsEvent']) {
     const modulePrototype = Module.prototype as any;
     const originalRequire = modulePrototype.require;
     modulePrototype.require = function (request: string) {
         if (request === 'vscode') {
-            return { commands: { executeCommand } };
+            return { commands: { executeCommand, getCommands: async () => commands } };
         }
         return originalRequire.call(this, request);
     };
@@ -33,6 +33,7 @@ describe('createAnalyticsReporter', () => {
 
         createAnalyticsReporter(context)('collection_click', { collectionName: 'Blog', collectionId: 'blog' });
         await new Promise<void>((resolve) => setImmediate(resolve));
+        await new Promise<void>((resolve) => setImmediate(resolve));
 
         assert.deepEqual(calls, [[
             'wixIdePlatform.reportAnalyticsEvent',
@@ -50,11 +51,35 @@ describe('createAnalyticsReporter', () => {
 
         createAnalyticsReporter(context)('panel_opened');
         await new Promise<void>((resolve) => setImmediate(resolve));
+        await new Promise<void>((resolve) => setImmediate(resolve));
 
         assert.deepEqual(calls[0].slice(2), ['panel_opened', undefined]);
     });
 
-    it('swallows a rejected command and warns', async () => {
+    it('does nothing when the bridge command is not registered', async () => {
+        const calls: unknown[][] = [];
+        const warnings: unknown[][] = [];
+        const originalWarn = console.warn;
+        console.warn = (...args: unknown[]) => {
+            warnings.push(args);
+        };
+        try {
+            const { createAnalyticsReporter } = loadAnalyticsWithVscodeStub(async (...args) => {
+                calls.push(args);
+            }, []);
+
+            createAnalyticsReporter(context)('refresh');
+            await new Promise<void>((resolve) => setImmediate(resolve));
+            await new Promise<void>((resolve) => setImmediate(resolve));
+
+            assert.equal(calls.length, 0);
+            assert.equal(warnings.length, 0);
+        } finally {
+            console.warn = originalWarn;
+        }
+    });
+
+    it('warns when the bridge command exists but fails', async () => {
         const warnings: unknown[][] = [];
         const originalWarn = console.warn;
         console.warn = (...args: unknown[]) => {
@@ -62,10 +87,11 @@ describe('createAnalyticsReporter', () => {
         };
         try {
             const { createAnalyticsReporter } = loadAnalyticsWithVscodeStub(async () => {
-                throw new Error("command 'wixIdePlatform.reportAnalyticsEvent' not found");
+                throw new Error('boom');
             });
 
             assert.doesNotThrow(() => createAnalyticsReporter(context)('refresh'));
+            await new Promise<void>((resolve) => setImmediate(resolve));
             await new Promise<void>((resolve) => setImmediate(resolve));
 
             assert.equal(warnings.length, 1);

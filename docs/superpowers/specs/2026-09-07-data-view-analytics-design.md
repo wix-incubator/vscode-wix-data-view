@@ -49,7 +49,7 @@ All with `extension: 'vscode-wix-data-view'`. `collectionName` is the collection
 
 ## Decisions
 
-- **Reporter** `src/analytics.ts`: `createAnalyticsReporter(context)` → `(event, data?) => void`, calls `vscode.commands.executeCommand('wixIdePlatform.reportAnalyticsEvent', context.extension, event, data)` and swallows rejections with a `console.warn`. No dependency on any Wix IDE package; the command id is a string literal. Same shape as the CLI extension's reporter in `wix-ide-platform`.
+- **Reporter** `src/analytics.ts`: `createAnalyticsReporter(context)` → `(event, data?) => void`. It looks up whether the bridge command is registered once per session, via `vscode.commands.getCommands()`, then on each call skips reporting silently if it is absent, or calls `vscode.commands.executeCommand('wixIdePlatform.reportAnalyticsEvent', context.extension, event, data)` and warns with `console.warn` if that call rejects. No dependency on any Wix IDE package; the command id is a string literal. Same shape as the CLI extension's reporter in `wix-ide-platform`.
 - **Report at the command handler**, before the action runs, so cancelled or failing actions still count as intent (matches the plan's "records the intent" wording).
 - **Tree events via `TreeView`**, not the provider: `createTreeView` returns the view; the extension keeps it to subscribe to `onDidChangeVisibility` and `onDidExpandElement`.
 - **No new commands or manifest changes** (see `open_collection` above). Keeps the marketplace package identical for non-Wix users.
@@ -65,7 +65,7 @@ All with `extension: 'vscode-wix-data-view'`. `collectionName` is the collection
 
 ## Error handling
 
-The reporter never throws or rejects into extension code. Outside the Wix IDE the command is missing and the promise rejects; the reporter warns once per event to the console and continues. Inside the Wix IDE a malformed payload is rejected by the bridge and logged in its output channel.
+The reporter never throws or rejects into extension code. Outside the Wix IDE the bridge command is missing, which is a normal situation, not an error: nothing is called and nothing is logged. Inside the Wix IDE, a failure of an existing bridge command — for example a malformed payload rejected by the bridge — is warned once per event to the console and logged in the bridge's output channel.
 
 ## Testing
 
