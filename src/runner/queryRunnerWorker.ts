@@ -47,6 +47,14 @@ console.error = function (...args: any[]) {
   parentPort?.postMessage({ error: formatted });
 };
 
+function serialize(value: unknown): string {
+  try {
+    return JSON.stringify(value, null, 2);
+  } catch {
+    return util.inspect(value, { depth: 4 });
+  }
+}
+
 parentPort?.on("message", async (query) => {
     // Do the query here
     try {
@@ -59,7 +67,6 @@ parentPort?.on("message", async (query) => {
         parentPort?.postMessage({ result: JSON.stringify(result, null, 2) });
       }
     } catch (e: any) {
-      parentPort?.postMessage({ result: JSON.stringify(e, null, 2) });
-      parentPort?.postMessage({ error: JSON.stringify(e) });
+      parentPort?.postMessage({ result: serialize(e), error: e instanceof Error ? e.message : serialize(e) });
     }
 });

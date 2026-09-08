@@ -165,6 +165,10 @@ export async function runQuery(context: vscode.ExtensionContext, credentialManag
     queryRunnerWorker.on('message', (result) => {
         if (result.result) {
             showResult(context, result.result);
+            if (result.error) {
+                outputChannel.appendLine('Error: ' + result.error);
+                vscode.window.showErrorMessage('Error: ' + result.error);
+            }
             queryRunnerWorker.terminate();
         } else if (result.log) {
             outputChannel.appendLine('Log: ' + result.log);
@@ -174,6 +178,12 @@ export async function runQuery(context: vscode.ExtensionContext, credentialManag
             outputChannel.appendLine('Error: ' + result.error);
             vscode.window.showErrorMessage('Error: ' + result.error);
         }
+    });
+
+    queryRunnerWorker.on('error', (error) => {
+        outputChannel.appendLine('Error: ' + error.message);
+        vscode.window.showErrorMessage('Error: ' + error.message);
+        queryRunnerWorker.terminate();
     });
 
     queryRunnerWorker.postMessage(query);

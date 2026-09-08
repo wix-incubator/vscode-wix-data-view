@@ -25,3 +25,6 @@
 
 ## [0.0.9]
 - Don't show update/delete actions for system fields
+
+## [0.0.11]
+- Show query runner failures (including credential errors) instead of failing silently
