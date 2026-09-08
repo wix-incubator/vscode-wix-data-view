@@ -59,6 +59,7 @@ parentPort?.on("message", async (query) => {
         parentPort?.postMessage({ result: JSON.stringify(result, null, 2) });
       }
     } catch (e: any) {
-      parentPort?.postMessage({ result: JSON.stringify(e, null, 2), error: JSON.stringify(e) });
+      parentPort?.postMessage({ result: JSON.stringify(e, null, 2) });
+      parentPort?.postMessage({ error: JSON.stringify(e) });
     }
 });

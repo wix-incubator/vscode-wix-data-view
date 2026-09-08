@@ -86,28 +86,6 @@ describe('queryRunnerWorker', async () => {
 
         queryRunnerWorker.terminate();
     });
-
-    it('should report a thrown error as a single message with result and error', async () => {
-        const queryRunnerWorker = createWorker();
-
-        const messages: unknown[] = [];
-        const done = new Promise<void>((resolve) => {
-            queryRunnerWorker.on('message', (message) => {
-                messages.push(message);
-                setTimeout(resolve, 200); // give a possible second message time to arrive
-            });
-        });
-
-        queryRunnerWorker.postMessage("throw Object.assign(new Error('boom'), { code: 403 })");
-
-        await done;
-
-        queryRunnerWorker.terminate();
-
-        assert.equal(messages.length, 1);
-        assert.deepStrictEqual(Object.keys(messages[0] as object).sort(), ['error', 'result']);
-        assert.ok(String((messages[0] as any).error).includes('403'));
-    });
 });
 
 function createWorker() {

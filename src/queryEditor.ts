@@ -175,23 +175,33 @@ export async function runQuery(
         }
     );
 
+    // The worker posts `{ result }` for a completed run and, for a thrown error,
+    // `{ result }` immediately followed by `{ error }`. Defer the success report
+    // one tick so a trailing error message can turn it into a failure.
+    let finished = false;
+    let pendingSuccess: ReturnType<typeof setImmediate> | undefined;
+    const finish = (status: 'success' | 'failure', failureReason?: string) => {
+        if (finished) return;
+        finished = true;
+        reportAnalytics('query_finished', failureReason === undefined
+            ? { ...queryInfo, status }
+            : { ...queryInfo, status, failureReason });
+    };
+
     queryRunnerWorker.on('message', (result) => {
         if (result.result) {
-            reportAnalytics('query_finished', result.error
-                ? { ...queryInfo, status: 'failure', failureReason: String(result.error) }
-                : { ...queryInfo, status: 'success' });
+            pendingSuccess = setImmediate(() => finish('success'));
             showResult(context, result.result);
-            if (result.error) {
-                outputChannel.appendLine('Error: ' + result.error);
-                vscode.window.showErrorMessage('Error: ' + result.error);
-            }
             queryRunnerWorker.terminate();
         } else if (result.log) {
             outputChannel.appendLine('Log: ' + result.log);
         } else if (result.warn) {
             outputChannel.appendLine('Warning: ' + result.warn);
         } else if (result.error) {
-            // console.error from the user's script: a log line, not the end of the run.
+            if (pendingSuccess) {
+                clearImmediate(pendingSuccess);
+                finish('failure', String(result.error));
+            }
             outputChannel.appendLine('Error: ' + result.error);
             vscode.window.showErrorMessage('Error: ' + result.error);
         }
