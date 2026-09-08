@@ -158,48 +158,51 @@ export async function runQuery(
 
     const query = editor.document.getText();
 
-    const queryInfo = {
-        operation: queryOperationFromPath(editor.document.uri.path),
-        query,
-        queryLength: query.length,
-    };
+    const queryInfo = { operation: queryOperationFromPath(editor.document.uri.path) };
     reportAnalytics('query_run', queryInfo);
 
-    const queryRunnerWorker = new worker.Worker(
-        new URL(context.extensionUri + '/dist/queryRunnerWorker.js'),
-        {
-            workerData: {
-                auth: credentialManager.getAuth(),
-                siteId: credentialManager.getSiteId(),
-            }
-        }
-    );
-
-    // The worker posts `{ result }` for a completed run and, for a thrown error,
-    // `{ result }` immediately followed by `{ error }`. Defer the success report
-    // one tick so a trailing error message can turn it into a failure.
     let finished = false;
     let pendingSuccess: ReturnType<typeof setImmediate> | undefined;
+    let queryRunnerWorker: worker.Worker | undefined;
     const finish = (status: 'success' | 'failure', failureReason?: string) => {
         if (finished) return;
         finished = true;
-        reportAnalytics('query_finished', failureReason === undefined
-            ? { ...queryInfo, status }
-            : { ...queryInfo, status, failureReason });
+        if (pendingSuccess) clearImmediate(pendingSuccess);
+        reportAnalytics('query_finished', {
+            ...queryInfo,
+            status,
+            ...(failureReason === undefined ? {} : { failureReason }),
+        });
+        void queryRunnerWorker?.terminate();
     };
 
-    queryRunnerWorker.on('message', (result) => {
-        if (result.result) {
+    try {
+        queryRunnerWorker = new worker.Worker(
+            new URL(context.extensionUri + '/dist/queryRunnerWorker.js'),
+            {
+                workerData: {
+                    auth: credentialManager.getAuth(),
+                    siteId: credentialManager.getSiteId(),
+                }
+            }
+        );
+    } catch (error) {
+        finish('failure', String(error));
+        throw error;
+    }
+
+    queryRunnerWorker.on('message', (result: { result?: string; log?: string; warn?: string; error?: string }) => {
+        if (Object.prototype.hasOwnProperty.call(result, 'result')) {
             pendingSuccess = setImmediate(() => finish('success'));
-            showResult(context, result.result);
-            queryRunnerWorker.terminate();
+            if (typeof result.result === 'string') {
+                void showResult(context, result.result).catch(() => undefined);
+            }
         } else if (result.log) {
             outputChannel.appendLine('Log: ' + result.log);
         } else if (result.warn) {
             outputChannel.appendLine('Warning: ' + result.warn);
         } else if (result.error) {
             if (pendingSuccess) {
-                clearImmediate(pendingSuccess);
                 finish('failure', String(result.error));
             }
             outputChannel.appendLine('Error: ' + result.error);
@@ -207,5 +210,18 @@ export async function runQuery(
         }
     });
 
-    queryRunnerWorker.postMessage(query);
+    queryRunnerWorker.on('error', (error) => {
+        finish('failure', String(error));
+    });
+
+    queryRunnerWorker.on('exit', () => {
+        if (!finished) finish('failure', 'Worker exited before completing the query');
+    });
+
+    try {
+        queryRunnerWorker.postMessage(query);
+    } catch (error) {
+        finish('failure', String(error));
+        throw error;
+    }
 }

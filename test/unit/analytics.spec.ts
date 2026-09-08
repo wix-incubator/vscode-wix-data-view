@@ -3,7 +3,7 @@ import Module from 'module';
 
 type ExecuteCommand = (command: string, ...args: unknown[]) => Promise<unknown>;
 
-function loadAnalyticsWithVscodeStub(executeCommand: ExecuteCommand) {
+function loadAnalyticsWithVscodeStub(executeCommand: ExecuteCommand, analyticsEnabled = true) {
     const modulePrototype = Module.prototype as any;
     const originalRequire = modulePrototype.require;
     modulePrototype.require = function (request: string) {
@@ -11,6 +11,11 @@ function loadAnalyticsWithVscodeStub(executeCommand: ExecuteCommand) {
             return {
                 commands: {
                     executeCommand,
+                },
+                workspace: {
+                    getConfiguration: () => ({
+                        get: () => analyticsEnabled,
+                    }),
                 },
             };
         }
@@ -35,14 +40,14 @@ describe('createAnalyticsReporter', () => {
             calls.push(args);
         });
 
-        createAnalyticsReporter(context)('collection_click', { collectionName: 'Blog', collectionId: 'blog' });
+        createAnalyticsReporter(context)('query_run', { operation: 'query' });
         await new Promise<void>((resolve) => setImmediate(resolve));
 
         assert.deepEqual(calls, [[
             'wixIdePlatform.reportAnalyticsEvent',
             (context as any).extension,
-            'collection_click',
-            { collectionName: 'Blog', collectionId: 'blog' },
+            'query_run',
+            { operation: 'query' },
         ]]);
     });
 
@@ -93,6 +98,26 @@ describe('createAnalyticsReporter', () => {
             console.warn = originalWarn;
             console.error = originalError;
         }
+    });
+
+    it('swallows a command that throws synchronously', () => {
+        const { createAnalyticsReporter } = loadAnalyticsWithVscodeStub(() => {
+            throw new Error('bridge unavailable');
+        });
+
+        assert.doesNotThrow(() => createAnalyticsReporter(context)('refresh'));
+    });
+
+    it('does not execute the bridge command when analytics are disabled', async () => {
+        const calls: unknown[][] = [];
+        const { createAnalyticsReporter } = loadAnalyticsWithVscodeStub(async (...args) => {
+            calls.push(args);
+        }, false);
+
+        createAnalyticsReporter(context)('refresh');
+        await new Promise<void>((resolve) => setImmediate(resolve));
+
+        assert.deepEqual(calls, []);
     });
 });
 

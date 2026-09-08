@@ -25,6 +25,11 @@
           "type": "boolean",
           "default": false,
           "description": "Write query files to disk so VSCode provides type-aware auto-complete for the Wix Data SDK globals (wixData, collections, indexes, etc.). When off, queries open as in-memory untitled documents with no auto-complete."
+        },
+        "vscode-wix-data-view.analytics.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report Wix Data View usage analytics events. No query text, code, or results are included."
         }
       }
     },
