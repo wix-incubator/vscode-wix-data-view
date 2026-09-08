@@ -25,3 +25,6 @@
 
 ## [0.0.9]
 - Don't show update/delete actions for system fields
+
+## [0.0.11]
+- Report analytics events to the Wix IDE Platform bridge when running inside the Wix IDE

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { collections } from '@wix/data';
 import { WixDataCollectionProvider } from './wix/dataCollectionProvider';
 
-enum NodeType {
+export enum NodeType {
     FIELD = 1,
     COLLECTION = 2,
     NAMESPACE = 3,

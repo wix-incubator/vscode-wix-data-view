@@ -4,6 +4,7 @@ import { collections } from '@wix/data';
 import { pick } from 'lodash';
 import { WixCredentialManager } from './auth/credentialManager';
 import { ensureQueryWorkspace, isAutocompleteEnabled } from './runner/queryWorkspace';
+import { queryOperationFromPath, type AnalyticsReporter } from './analytics';
 
 function randomSuffix(): string {
     return Math.random().toString(36).substring(2);
@@ -142,7 +143,12 @@ export async function showResult(context: vscode.ExtensionContext, result: strin
     });
 }
 
-export async function runQuery(context: vscode.ExtensionContext, credentialManager: WixCredentialManager, outputChannel: vscode.OutputChannel) {
+export async function runQuery(
+    context: vscode.ExtensionContext,
+    credentialManager: WixCredentialManager,
+    outputChannel: vscode.OutputChannel,
+    reportAnalytics: AnalyticsReporter
+) {
     const editor = vscode.window.activeTextEditor;
 
     if (!editor) {
@@ -152,29 +158,70 @@ export async function runQuery(context: vscode.ExtensionContext, credentialManag
 
     const query = editor.document.getText();
 
-    const queryRunnerWorker = new worker.Worker(
-        new URL(context.extensionUri + '/dist/queryRunnerWorker.js'),
-        {
-            workerData: {
-                auth: credentialManager.getAuth(),
-                siteId: credentialManager.getSiteId(),
-            }
-        }
-    );
+    const queryInfo = { operation: queryOperationFromPath(editor.document.uri.path) };
+    reportAnalytics('query_run', queryInfo);
 
-    queryRunnerWorker.on('message', (result) => {
-        if (result.result) {
-            showResult(context, result.result);
-            queryRunnerWorker.terminate();
+    let finished = false;
+    let pendingSuccess: ReturnType<typeof setImmediate> | undefined;
+    let queryRunnerWorker: worker.Worker | undefined;
+    const finish = (status: 'success' | 'failure', failureReason?: string) => {
+        if (finished) return;
+        finished = true;
+        if (pendingSuccess) clearImmediate(pendingSuccess);
+        reportAnalytics('query_finished', {
+            ...queryInfo,
+            status,
+            ...(failureReason === undefined ? {} : { failureReason }),
+        });
+        void queryRunnerWorker?.terminate();
+    };
+
+    try {
+        queryRunnerWorker = new worker.Worker(
+            new URL(context.extensionUri + '/dist/queryRunnerWorker.js'),
+            {
+                workerData: {
+                    auth: credentialManager.getAuth(),
+                    siteId: credentialManager.getSiteId(),
+                }
+            }
+        );
+    } catch (error) {
+        finish('failure', String(error));
+        throw error;
+    }
+
+    queryRunnerWorker.on('message', (result: { result?: string; log?: string; warn?: string; error?: string }) => {
+        if (Object.prototype.hasOwnProperty.call(result, 'result')) {
+            pendingSuccess = setImmediate(() => finish('success'));
+            if (typeof result.result === 'string') {
+                void showResult(context, result.result).catch(() => undefined);
+            }
         } else if (result.log) {
             outputChannel.appendLine('Log: ' + result.log);
         } else if (result.warn) {
             outputChannel.appendLine('Warning: ' + result.warn);
         } else if (result.error) {
+            if (pendingSuccess) {
+                finish('failure', String(result.error));
+            }
             outputChannel.appendLine('Error: ' + result.error);
             vscode.window.showErrorMessage('Error: ' + result.error);
         }
     });
 
-    queryRunnerWorker.postMessage(query);
+    queryRunnerWorker.on('error', (error) => {
+        finish('failure', String(error));
+    });
+
+    queryRunnerWorker.on('exit', () => {
+        if (!finished) finish('failure', 'Worker exited before completing the query');
+    });
+
+    try {
+        queryRunnerWorker.postMessage(query);
+    } catch (error) {
+        finish('failure', String(error));
+        throw error;
+    }
 }
