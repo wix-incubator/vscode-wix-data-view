@@ -38,7 +38,7 @@ describe('APIKeyAuthSource', () => {
         };
 
         try {
-            const { APIKeyAuthSource } = require('../../src/auth/credentialSources') as typeof import('../../src/auth/credentialSources');
+            const { APIKeyAuthSource } = require('../../src/auth/apiKeyAuthSource') as typeof import('../../src/auth/apiKeyAuthSource');
             const source = new APIKeyAuthSource({
                 secrets: {
                     get: () => ({
@@ -104,6 +104,16 @@ describe('APIKeyAuthSource', () => {
         assert.equal(source.getApiKeySource(), undefined);
         assert.deepEqual(deletedApiKeys, ['wixApiKey']);
     });
+
+    it('restores the Wix CLI API key immediately when the saved key is cleared', async () => {
+        const { source, deletedApiKeys } = await createSource({ storedApiKey: 'stored-key', cliApiKey: 'cli-key' });
+
+        source.updateApiKey('');
+
+        assert.equal(source.getApiKey(), 'cli-key');
+        assert.equal(source.getApiKeySource(), 'WixCli');
+        assert.deepEqual(deletedApiKeys, ['wixApiKey']);
+    });
 });
 
 async function createSource(options: { storedApiKey?: string; cliApiKey?: string } = {}) {
@@ -132,8 +142,8 @@ async function createSource(options: { storedApiKey?: string; cliApiKey?: string
     };
 
     try {
-        delete require.cache[require.resolve('../../src/auth/credentialSources')];
-        const { APIKeyAuthSource } = require('../../src/auth/credentialSources') as typeof import('../../src/auth/credentialSources');
+        delete require.cache[require.resolve('../../src/auth/apiKeyAuthSource')];
+        const { APIKeyAuthSource } = require('../../src/auth/apiKeyAuthSource') as typeof import('../../src/auth/apiKeyAuthSource');
         const source = new APIKeyAuthSource({
             secrets: {
                 get: () => Promise.resolve(options.storedApiKey),

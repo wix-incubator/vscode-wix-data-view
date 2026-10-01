@@ -28,11 +28,17 @@ export class ConfigurationPanel {
 
         panel.webview.onDidReceiveMessage(async (message) => {
             switch (message.command) {
-                case 'saveConfiguration':
+                case 'saveApiKey':
                     wixCredentialManager.updateApiKey(message.apiKey);
-                    wixCredentialManager.updateSiteId(message.siteId);
+                    panel.webview.html = this.getWebviewContent(extensionUri);
                     vscode.commands.executeCommand('vscode-wix-data-view.refresh-collections');
-                    vscode.window.showInformationMessage('Configuration saved');
+                    vscode.window.showInformationMessage('API key saved');
+                    break;
+                case 'saveSiteId':
+                    wixCredentialManager.updateSiteId(message.siteId);
+                    panel.webview.html = this.getWebviewContent(extensionUri);
+                    vscode.commands.executeCommand('vscode-wix-data-view.refresh-collections');
+                    vscode.window.showInformationMessage('Site ID saved');
                     break;
             }
         });
@@ -73,8 +79,8 @@ export class ConfigurationPanel {
         );
 
         const auth = this.wixCredentialManager.getAuth();
-        const apiKey = auth.type === 'APIKey' ? auth.apiKey : '';
-        const siteId = this.wixCredentialManager.getSiteId();
+        const apiKey = auth.type === 'APIKey' && !this.wixCredentialManager.isUsingWixCliApiKey() ? auth.apiKey : '';
+        const siteId = this.wixCredentialManager.getSavedSiteId();
         const credentialStatus = this.getCredentialStatus();
         const nonce = this.getNonce();
         const csp = [
@@ -103,24 +109,26 @@ export class ConfigurationPanel {
                 This key should have at least List Sites and Wix Data permissions.
                 </p>
                 <p>
-                Alternatively, install Wix CLI and log in with <code>wix login</code> 
-                to automatically use your CLI credentials without saving an API key here. 
-                The extension will detect and use the CLI API key as long as no manual API key is saved.
+                If Wix CLI has a configured API key, the extension uses it when no manual API key is saved.
+                A workspace configuration can supply the Site ID when no manual Site ID is saved.
                 </p>
 
                 ${credentialStatus}
 
-                <form>
+                <form id="apiKeyForm">
                     <div>
                         <label for="apiKey">API Key</label>
                         <input type="password" id="apiKey" name="apiKey" value="${this.escapeAttribute(apiKey)}"/>
+                        <p>Leave empty to use the Wix CLI API key, if available.</p>
+                        <button type="submit">Save API Key</button>
                     </div>
+                </form>
+                <form id="siteIdForm">
                     <div>
                         <label for="siteId">Site ID</label>
                         <input type="text" id="siteId" name="siteId" value="${this.escapeAttribute(siteId)}"/>
-                    </div>
-                    <div>
-                        <button id="save" type="button">Save Configuration</button>
+                        <p>A saved Site ID applies across workspaces. Leave empty to use the current workspace configuration.</p>
+                        <button type="submit">Save Site ID</button>
                     </div>
                 </form>
 
@@ -131,21 +139,35 @@ export class ConfigurationPanel {
     }
 
     private getCredentialStatus(): string {
-        if (this.wixCredentialManager.isUsingWixCliApiKey()) {
-            return `
+        const apiKeyStatus = this.wixCredentialManager.isUsingWixCliApiKey()
+            ? `
                 <div class="credential-status credential-status--active">
-                    <strong>Automatic Wix CLI credentials are in use.</strong>
-                    <span>The API key was detected from your Wix CLI login because no manual API key is saved.</span>
+                    <strong>Wix CLI API key is in use.</strong>
+                    <span>No manual API key is saved.</span>
                 </div>
-            `;
-        }
-
-        return `
+            `
+            : `
             <div class="credential-status">
-                <strong>Automatic Wix CLI credentials are not in use.</strong>
-                <span>Saved manual credentials will be used.</span>
+                <strong>${this.wixCredentialManager.getAuth().type === 'APIKey' ? 'Saved API key is in use.' : 'No API key is available.'}</strong>
             </div>
         `;
+        const siteId = this.wixCredentialManager.getSiteId();
+        const siteIdStatus = this.wixCredentialManager.isUsingWorkspaceSiteId()
+            ? `
+                <div class="credential-status credential-status--active">
+                    <strong>Workspace Site ID is in use.</strong>
+                    <span>${this.escapeAttribute(siteId)}</span>
+                    <span>No manual Site ID is saved. The site follows the current workspace configuration.</span>
+                </div>
+            `
+            : `
+                <div class="credential-status">
+                    <strong>${siteId ? 'Saved Site ID is in use.' : 'No Site ID is available.'}</strong>
+                    ${siteId ? `<span>${this.escapeAttribute(siteId)}</span>` : ''}
+                </div>
+            `;
+
+        return apiKeyStatus + siteIdStatus;
     }
 
     private getNonce(): string {
