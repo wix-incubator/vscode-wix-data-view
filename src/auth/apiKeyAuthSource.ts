@@ -3,7 +3,7 @@ import os from 'os';
 import path from 'path';
 
 import * as vscode from 'vscode';
-import { formatCredentialLoadError, parseWixConfig } from './credentialErrors';
+import { formatCredentialLoadError } from './credentialErrors';
 
 const WIX_CLI_API_KEY_PATH = '.wix/auth/api-key.json';
 
@@ -77,91 +77,6 @@ export class APIKeyAuthSource {
 
     public getApiKeySource(): ApiKeyAuthSourceType | undefined {
         return this.apiKeySource;
-    }
-
-    public isReady(): boolean {
-        return this.ready;
-    }
-}
-
-const SITE_ID_CONFIG_KEY = 'wixSiteId';
-
-export class ConfigurationSiteIdSource {
-    private readonly context: vscode.ExtensionContext;
-    private siteId?: string;
-    private ready: boolean = false;
-
-    constructor(context: vscode.ExtensionContext) {
-        this.context = context;
-        this.load();
-    }
-
-    private load(): void {
-        this.siteId = this.context.globalState.get(SITE_ID_CONFIG_KEY) ?? '';
-        this.ready = true;
-    }
-
-    public updateSiteId(siteId: string) {
-        this.context.globalState.update(SITE_ID_CONFIG_KEY, siteId);
-        this.siteId = siteId;
-    }
-
-    public getSiteId(): string {
-        return this.siteId ?? '';
-    }
-
-    public isReady(): boolean {
-        return this.ready;
-    }
-}
-
-export class WorkspaceWixConfigSiteIdSource {
-    private readonly context: vscode.ExtensionContext;
-    private siteId?: string;
-    private ready: boolean = false;
-
-    constructor(context: vscode.ExtensionContext) {
-        this.context = context;
-        this.load();
-    }
-
-    public load(): void {
-        if (vscode.workspace.workspaceFolders) {
-            for (let workspaceFolder of vscode.workspace.workspaceFolders) {
-                const configFile = path.join(workspaceFolder.uri.fsPath, 'wix.config.json');
-                try {
-                    if (fs.existsSync(configFile)) {
-                        const config = parseWixConfig(fs.readFileSync(configFile, 'utf8'), configFile);
-                        this.siteId = config.siteId;
-                        this.ready = true;
-                        return;
-                    }
-                } catch (error) {
-                    this.siteId = undefined;
-                    this.ready = true;
-                    vscode.window.showErrorMessage(error instanceof Error ? error.message : String(error));
-                    return;
-                }
-            }
-        }
-
-        this.ready = true;
-    }
-
-    public isAvailable(): boolean {
-        if (vscode.workspace.workspaceFolders) {
-            for (let workspaceFolder of vscode.workspace.workspaceFolders) {
-                const configFile = workspaceFolder.uri.fsPath + '/wix.config.json';
-                if (fs.existsSync(configFile)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public getSiteId(): string {
-        return this.siteId ?? '';
     }
 
     public isReady(): boolean {

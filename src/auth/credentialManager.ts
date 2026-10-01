@@ -1,12 +1,9 @@
 import * as vscode from 'vscode';
 import _ from 'lodash';
 
-import { 
-    APIKeyAuthSource, 
-    ApiKeyAuthSourceType,
-    ConfigurationSiteIdSource, 
-    WorkspaceWixConfigSiteIdSource,
-} from './credentialSources';
+import { APIKeyAuthSource, ApiKeyAuthSourceType } from './apiKeyAuthSource';
+import { ConfigurationSiteIdSource } from './configurationSiteIdSource';
+import { WorkspaceWixConfigSiteIdSource } from './workspaceWixConfigSiteIdSource';
 import { AuthSource, ExtensionAuth } from './api';
 
 
@@ -39,12 +36,12 @@ export class WixCredentialManager {
 
     public runSuggestions(): void {
         this.workspaceWixConfigSiteIdSource.load();
-        if (this.workspaceWixConfigSiteIdSource.isAvailable() &&
-            this.workspaceWixConfigSiteIdSource.getSiteId() !== this.getSiteId()) {
+        const workspaceSiteId = this.workspaceWixConfigSiteIdSource.getSiteId();
+        if (workspaceSiteId && workspaceSiteId !== this.getSiteId()) {
             vscode.window.showInformationMessage('Do you want to switch Wix Data View plugin to show data from site referred to by a current project?', 'Yes', 'No')
                 .then((selection) => {
                     if (selection === 'Yes') {
-                        this.updateSiteId(this.workspaceWixConfigSiteIdSource.getSiteId());
+                        this.updateSiteId(workspaceSiteId);
                         vscode.commands.executeCommand('vscode-wix-data-view.refresh-collections');
                     }
                 });
@@ -70,7 +67,7 @@ export class WixCredentialManager {
     }
 
     public getSiteId(): string {
-        return this.configurationSiteIdSource.getSiteId();
+        return this.configurationSiteIdSource.getSiteId() || this.workspaceWixConfigSiteIdSource.getSiteId();
     }
 
     public getAuth(): ExtensionAuth {
