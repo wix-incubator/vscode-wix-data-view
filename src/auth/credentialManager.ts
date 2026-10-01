@@ -67,7 +67,15 @@ export class WixCredentialManager {
     }
 
     public getSiteId(): string {
-        return this.configurationSiteIdSource.getSiteId() || this.workspaceWixConfigSiteIdSource.getSiteId();
+        return this.getSavedSiteId() || this.workspaceWixConfigSiteIdSource.getSiteId();
+    }
+
+    public getSavedSiteId(): string {
+        return this.configurationSiteIdSource.getSiteId();
+    }
+
+    public isUsingWorkspaceSiteId(): boolean {
+        return !this.getSavedSiteId() && !!this.workspaceWixConfigSiteIdSource.getSiteId();
     }
 
     public getAuth(): ExtensionAuth {

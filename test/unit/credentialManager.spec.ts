@@ -6,6 +6,8 @@ describe('WixCredentialManager site ID selection', () => {
         const { manager, prompts } = createManager('', 'workspace-site');
 
         assert.equal(manager.getSiteId(), 'workspace-site');
+        assert.equal(manager.getSavedSiteId(), '');
+        assert.equal(manager.isUsingWorkspaceSiteId(), true);
         assert.deepEqual(prompts, []);
     });
 
@@ -20,6 +22,8 @@ describe('WixCredentialManager site ID selection', () => {
         const { manager, prompts } = createManager('saved-site', 'workspace-site');
 
         assert.equal(manager.getSiteId(), 'saved-site');
+        assert.equal(manager.getSavedSiteId(), 'saved-site');
+        assert.equal(manager.isUsingWorkspaceSiteId(), false);
         assert.equal(prompts.length, 1);
     });
 
@@ -36,6 +40,7 @@ describe('WixCredentialManager site ID selection', () => {
         const { manager, prompts } = createManager('');
 
         assert.equal(manager.getSiteId(), '');
+        assert.equal(manager.isUsingWorkspaceSiteId(), false);
         assert.deepEqual(prompts, []);
     });
 

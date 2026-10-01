@@ -66,8 +66,12 @@ export class APIKeyAuthSource {
         Promise.resolve(persistence).catch((error) => {
             vscode.window.showErrorMessage(formatCredentialLoadError(error));
         });
-        this.apiKey = apiKey;
-        this.apiKeySource = apiKey ? ApiKeyAuthSourceType.SecretStore : undefined;
+        if (apiKey) {
+            this.apiKey = apiKey;
+            this.apiKeySource = ApiKeyAuthSourceType.SecretStore;
+        } else {
+            this.apiKey = this.loadFromCliConfig();
+        }
         this.ready = true;
     }
 

@@ -104,6 +104,16 @@ describe('APIKeyAuthSource', () => {
         assert.equal(source.getApiKeySource(), undefined);
         assert.deepEqual(deletedApiKeys, ['wixApiKey']);
     });
+
+    it('restores the Wix CLI API key immediately when the saved key is cleared', async () => {
+        const { source, deletedApiKeys } = await createSource({ storedApiKey: 'stored-key', cliApiKey: 'cli-key' });
+
+        source.updateApiKey('');
+
+        assert.equal(source.getApiKey(), 'cli-key');
+        assert.equal(source.getApiKeySource(), 'WixCli');
+        assert.deepEqual(deletedApiKeys, ['wixApiKey']);
+    });
 });
 
 async function createSource(options: { storedApiKey?: string; cliApiKey?: string } = {}) {

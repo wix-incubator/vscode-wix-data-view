@@ -55,6 +55,19 @@ describe('WorkspaceWixConfigSiteIdSource', () => {
         ]);
     });
 
+    it('reports invalid wix.config.json instead of selecting a lower-priority app config', () => {
+        const { source, errorMessages } = createSource({
+            '/workspace/wix.config.json': '{',
+            '/workspace/.wix/app.config.json': '{"siteId":"app-site"}',
+        });
+
+        assert.equal(source.getSiteId(), '');
+        assert.equal(source.isReady(), true);
+        assert.deepEqual(errorMessages, [
+            'wix.config.json could not be read. Check that the file contains valid JSON. File: /workspace/wix.config.json',
+        ]);
+    });
+
     it('reports no configuration when neither file exists', () => {
         const { source } = createSource({});
 

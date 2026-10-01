@@ -27,6 +27,7 @@ export class WorkspaceWixConfigSiteIdSource {
                     }
                 }
             } catch (error) {
+                // Invalid configuration needs fixing before a lower-priority file can select a site.
                 this.ready = true;
                 vscode.window.showErrorMessage(error instanceof Error ? error.message : String(error));
                 return;
