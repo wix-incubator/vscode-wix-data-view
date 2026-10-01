@@ -58,54 +58,59 @@ export class DataCollectionTree implements vscode.TreeDataProvider<DataCollectio
     }
 
     public async refresh(): Promise<void> {
-        try {
-            const dataCollections = await this.dataSchemaProvider.getCollections();
+        await vscode.window.withProgress(
+            { location: { viewId: 'vscode-wix-data-view.collection-tree' } },
+            async () => {
+                try {
+                    const dataCollections = await this.dataSchemaProvider.getCollections();
 
-            const collectionsByNamespace = _.groupBy(dataCollections, determineCollectionNamespace);
-            
-            const nativeCollections = (collectionsByNamespace['NATIVE']??[]).map((collection: collections.DataCollection) => 
-                new DataCollectionNode(
-                    collection.displayName ?? '<UNNAMED>', 
-                    vscode.TreeItemCollapsibleState.Collapsed, 
-                    this.collectionCommand(collection), 
-                    fieldNodes(collection),
-                    NodeType.COLLECTION,
-                    collection
-                )
-            );
+                    const collectionsByNamespace = _.groupBy(dataCollections, determineCollectionNamespace);
 
-            const driverCollections = _.map(_.toPairs(collectionsByNamespace).filter(([key, c]) => key !== 'NATIVE'), ([key, value]) => 
-                new DataCollectionNode(
-                    key, 
-                    vscode.TreeItemCollapsibleState.Collapsed, 
-                    undefined, 
-                    value.map((collection: collections.DataCollection) =>
+                    const nativeCollections = (collectionsByNamespace['NATIVE']??[]).map((collection: collections.DataCollection) =>
                         new DataCollectionNode(
-                            collection.displayName ?? '<UNNAMED>', 
-                            vscode.TreeItemCollapsibleState.Collapsed, 
+                            collection.displayName ?? '<UNNAMED>',
+                            vscode.TreeItemCollapsibleState.Collapsed,
                             this.collectionCommand(collection),
                             fieldNodes(collection),
                             NodeType.COLLECTION,
                             collection
                         )
-                    ),
-                    NodeType.NAMESPACE
-                )
-            );
+                    );
 
-            this.dataCollectionTree = [
-                ...nativeCollections,
-                ...driverCollections,
-            ];
+                    const driverCollections = _.map(_.toPairs(collectionsByNamespace).filter(([key, c]) => key !== 'NATIVE'), ([key, value]) =>
+                        new DataCollectionNode(
+                            key,
+                            vscode.TreeItemCollapsibleState.Collapsed,
+                            undefined,
+                            value.map((collection: collections.DataCollection) =>
+                                new DataCollectionNode(
+                                    collection.displayName ?? '<UNNAMED>',
+                                    vscode.TreeItemCollapsibleState.Collapsed,
+                                    this.collectionCommand(collection),
+                                    fieldNodes(collection),
+                                    NodeType.COLLECTION,
+                                    collection
+                                )
+                            ),
+                            NodeType.NAMESPACE
+                        )
+                    );
 
-            this._onDidChangeTreeData.fire(undefined);
-        } catch (e: any) {
-            if (e.details?.applicationError?.code === 403) {
-                vscode.window.showErrorMessage(`Failed to list Wix Data collections. Did you set your API key and chose the right site?`);
-            } else {
-                vscode.window.showErrorMessage(`Failed to list Wix Data collections. ${e.message.message ?? e.message}`);
+                    this.dataCollectionTree = [
+                        ...nativeCollections,
+                        ...driverCollections,
+                    ];
+
+                    this._onDidChangeTreeData.fire(undefined);
+                } catch (e: any) {
+                    if (e.details?.applicationError?.code === 403) {
+                        vscode.window.showErrorMessage(`Failed to list Wix Data collections. Did you set your API key and chose the right site?`);
+                    } else {
+                        vscode.window.showErrorMessage(`Failed to list Wix Data collections. ${e.message.message ?? e.message}`);
+                    }
+                }
             }
-        }
+        );
     }
 
     onDidChangeTreeData?: vscode.Event<void | DataCollectionNode | DataCollectionNode[] | null | undefined> = this._onDidChangeTreeData.event;
