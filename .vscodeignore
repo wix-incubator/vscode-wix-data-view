@@ -12,3 +12,10 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 **/.vscode-test.*
+.bloop
+.bloop/**
+.wixbazel/**
+.bsp/**
+.metals/**
+.claude/**
+.wix-data-view/**

@@ -28,3 +28,8 @@
 
 ## [0.0.11]
 - Report analytics events to the Wix IDE Platform bridge when running inside the Wix IDE
+
+## [0.1.0]
+- Add support for Studio Two projects
+- Update the configuration screen design to allow independent updates of the site and API key
+- Fix the collection tree view loading progress indicator
