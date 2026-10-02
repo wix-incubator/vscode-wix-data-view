@@ -99,38 +99,40 @@ export class ConfigurationPanel {
                 <link href="${styleUri}" rel="stylesheet"/>
                 <title>Wix Data Configuration</title>
             </head>
-            <body>
-                <h1>Wix Data Configuration</h1>
-                
-                <p>
-                Enter your Wix API Key and Site ID to start using the extension.
-                You can learn about creating 
-                <a href="https://support.wix.com/en/article/about-wix-api-keys">API keys here</a>.
-                This key should have at least List Sites and Wix Data permissions.
-                </p>
-                <p>
-                If Wix CLI has a configured API key, the extension uses it when no manual API key is saved.
-                A workspace configuration can supply the Site ID when no manual Site ID is saved.
-                </p>
+            <body class="configuration-page">
+                <main class="configuration-content">
+                    <header class="configuration-header">
+                        <h1>Wix Data Configuration</h1>
+                        <p>Connect to Wix Data with an API key and a Site ID.</p>
+                    </header>
 
-                ${credentialStatus}
+                    <section class="configuration-section" aria-labelledby="apiKeyHeading">
+                        <h2 id="apiKeyHeading">API Key</h2>
+                        <p class="section-description">
+                            Your key needs List Sites and Wix Data permissions.
+                            <a href="https://support.wix.com/en/article/about-wix-api-keys">Learn how to create an API key</a>.
+                        </p>
+                        ${credentialStatus.apiKey}
+                        <form id="apiKeyForm">
+                            <label for="apiKey">API key</label>
+                            <input type="password" id="apiKey" name="apiKey" value="${this.escapeAttribute(apiKey)}" aria-describedby="apiKeyHelp"/>
+                            <p class="field-help" id="apiKeyHelp">Leave empty and save to use the Wix CLI API key, if available.</p>
+                            <button type="submit">Save API Key</button>
+                        </form>
+                    </section>
 
-                <form id="apiKeyForm">
-                    <div>
-                        <label for="apiKey">API Key</label>
-                        <input type="password" id="apiKey" name="apiKey" value="${this.escapeAttribute(apiKey)}"/>
-                        <p>Leave empty to use the Wix CLI API key, if available.</p>
-                        <button type="submit">Save API Key</button>
-                    </div>
-                </form>
-                <form id="siteIdForm">
-                    <div>
-                        <label for="siteId">Site ID</label>
-                        <input type="text" id="siteId" name="siteId" value="${this.escapeAttribute(siteId)}"/>
-                        <p>A saved Site ID applies across workspaces. Leave empty to use the current workspace configuration.</p>
-                        <button type="submit">Save Site ID</button>
-                    </div>
-                </form>
+                    <section class="configuration-section" aria-labelledby="siteIdHeading">
+                        <h2 id="siteIdHeading">Site ID</h2>
+                        <p class="section-description">Choose the site whose collections you want to work with.</p>
+                        ${credentialStatus.siteId}
+                        <form id="siteIdForm">
+                            <label for="siteId">Site ID</label>
+                            <input type="text" id="siteId" name="siteId" value="${this.escapeAttribute(siteId)}" aria-describedby="siteIdHelp" spellcheck="false"/>
+                            <p class="field-help" id="siteIdHelp">A saved Site ID applies across workspaces. Leave empty and save to use the current workspace configuration.</p>
+                            <button type="submit">Save Site ID</button>
+                        </form>
+                    </section>
+                </main>
 
                 <script nonce="${nonce}" src="${scriptUri}"></script>
             </body>
@@ -138,7 +140,7 @@ export class ConfigurationPanel {
         `;
     }
 
-    private getCredentialStatus(): string {
+    private getCredentialStatus(): { apiKey: string; siteId: string } {
         const apiKeyStatus = this.wixCredentialManager.isUsingWixCliApiKey()
             ? `
                 <div class="credential-status credential-status--active">
@@ -167,7 +169,7 @@ export class ConfigurationPanel {
                 </div>
             `;
 
-        return apiKeyStatus + siteIdStatus;
+        return { apiKey: apiKeyStatus, siteId: siteIdStatus };
     }
 
     private getNonce(): string {
